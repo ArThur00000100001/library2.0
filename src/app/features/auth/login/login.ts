@@ -8,13 +8,13 @@ import {
   Validators,
   ReactiveFormsModule
 } from '@angular/forms';
-import { RouterLinkActive } from "@angular/router";
+import { RouterLink } from "@angular/router";
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.html',
   styleUrl: './login.scss',
-  imports: [ReactiveFormsModule, RouterLinkActive]
+  imports: [ReactiveFormsModule, RouterLink]
 })
 export class LoginComponent {
   formData = new FormGroup({
