@@ -1,0 +1,95 @@
+<div class="login-container">
+    <!-- Left Side: Image & Quote -->
+    <div class="image-side" role="presentation">
+        <div class="quote-container">
+            <h2>Transformando la lectura en una experiencia digital.</h2>
+            <p>Bienvenido de nuevo a Biblioteca 2.0, tu puerta de acceso al conocimiento infinito.</p>
+        </div>
+    </div>
+
+    <!-- Right Side: Login Form -->
+    <div class="form-side">
+        <div class="form-wrapper">
+            <header class="header">
+                <div class="logo">
+                    <div class="icon-box">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z" />
+                            <path d="M8 7h6" />
+                            <path d="M8 11h8" />
+                        </svg>
+                    </div>
+                    <span>Biblioteca 2.0</span>
+                </div>
+                <h1>Iniciar sesión</h1>
+                <p>Por favor, ingresa tus credenciales para continuar.</p>
+            </header>
+
+            <form [formGroup]="formData" (ngSubmit)="onSubmit()" class="login-form">
+                <!-- Email Field -->
+                <div class="form-group">
+                    <label for="email">Correo Electrónico</label>
+                    <div class="input-wrapper">
+                        <input type="email" id="email" formControlName="email" placeholder="ejemplo@gmail.com"
+                            [class.invalid]="formData.get('email')?.touched && formData.get('email')?.invalid" />
+                    </div>
+                    <div class="error-message">
+                        @if (formData.get('email')?.touched) {
+                        @if(formData.get('email')?.errors?.['required']){
+                        El correo es obligatorio
+                        }
+                        @else if(formData.get('email')?.errors?.['email']){
+                        Ingresa un correo válido
+                        }
+                        @else if(formData.get('email')?.errors?.['lastWord']){
+                        El correo debe terminar en @gmail.com
+                        }
+                        @else if(formData.get('email')?.errors?.['maxlength']){
+                        Límite de caracteres superado
+                        }
+                        }
+                    </div>
+                </div>
+
+                <!-- Password Field -->
+                <div class="form-group">
+                    <label for="password">Contraseña</label>
+                    <div class="input-wrapper">
+                        <input type="password" id="password" formControlName="password" placeholder="••••••••"
+                            [class.invalid]="formData.get('password')?.touched && formData.get('password')?.invalid" />
+                    </div>
+                    <div class="error-message">
+                        @if (formData.get('password')?.touched) {
+                        @if(formData.get('password')?.errors?.['required']){
+                        La contraseña es obligatoria
+                        }
+                        @else if(formData.get('password')?.errors?.['minlength']){
+                        Mínimo 4 caracteres
+                        }
+                        @else if(formData.get('password')?.errors?.['maxlength']){
+                        Máximo 16 caracteres
+                        }
+                        }
+                    </div>
+                </div>
+
+                <div class="form-options">
+                    <label class="remember-me">
+                        <input type="checkbox">
+                        Recordarme
+                    </label>
+                    <a href="#" class="forgot-password">¿Olvidaste tu contraseña?</a>
+                </div>
+
+                <button type="submit" class="submit-btn" [disabled]="formData.invalid && formData.touched">
+                    Entrar al Sistema
+                </button>
+            </form>
+
+            <div class="register-prompt">
+                <p>¿No tienes una cuenta? <a href="/register">Solicita acceso</a></p>
+            </div>
+        </div>
+    </div>
+</div>
