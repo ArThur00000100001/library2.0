@@ -1,19 +1,25 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
+
+
+
+export type ILoginResponse = {
+  access_token: string;
+  user: IUser;
+};
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  readonly routerService = inject(Router)
-  readonly user = signal<IUser | null>(null);
+  router = inject(Router);
 
-  constructor(){
-    this.user.set(JSON.parse(localStorage.getItem('user') || 'null'));
-  }
+  token = signal<string>(null!);
+  user = signal<IUser>(null!);
+  role = computed(() => this.user().role);
 
   logout(){
-    this.user.set(null);
-    this.routerService.navigate(['/login']);
+    localStorage.removeItem('token-raw')
+    this.router.navigate(['/login'])
   }
 }

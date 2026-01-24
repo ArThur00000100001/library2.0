@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
+import { ChangeDetectionStrategy, Component, inject, signal } from "@angular/core";
 import { RouterOutlet } from "@angular/router";
+import { AuthService } from "../../core/guard/auth.service";
 
 @Component({
   selector: 'app-layout-home',
@@ -10,9 +11,16 @@ import { RouterOutlet } from "@angular/router";
   imports: [RouterOutlet],
 })
 export class LayoutHomeComponent {
+  readonly authService = inject(AuthService)
+  readonly user = this.authService.user()
+
   isOpen = signal(true);
 
   toggleSidebar() {
     this.isOpen.update(value => !value);
+  }
+
+  logout(){
+    this.authService.logout()
   }
 }
