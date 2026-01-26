@@ -1,0 +1,176 @@
+<div class="modal-container">
+  <!-- Header -->
+  <div class="modal-header border-0 pb-0">
+    <h5 class="modal-title h4 fw-bold text-white">
+      <span class="accent-line"></span>
+
+      {{ mode() === 'create' ? 'Registrar' : mode() === 'edit' ? 'Editar' : 'Importar' }}
+    </h5>
+    <button type="button" class="btn-close btn-close-white" aria-label="Close"
+      (click)="modalActivate?.close()"></button>
+  </div>
+
+  <!-- Body -->
+  <div class="modal-body py-4">
+    <p class="text-secondary small mb-4">
+      Completa la información detallada para registrar un nuevo usuario en la biblioteca.
+    </p>
+
+    <form class="row g-3" [formGroup]="formData">
+      <!-- Full Name -->
+      <div class="col-12">
+        <label class="form-label text-light small fw-semibold">Nombre Completo</label>
+        <div class="input-group-custom">
+          <input type="text" class="form-control-custom" placeholder="Ej. Juan Andrés" formControlName="fullName" />
+        </div>
+
+        <label class="text-danger">
+          @if (formData.get('fullName')?.touched) {
+          @if (formData.get('fullName')?.errors?.['required']) {
+          Campo obligatorio
+          }
+          @if (
+          formData.get('fulName')?.errors?.['maxlength'] ||
+          formData.get('fullName')?.errors?.['minlength']
+          ) {
+          Límite de carácteres (3-25)
+          }
+          }
+        </label>
+      </div>
+
+      <!-- Last Names -->
+      <div class="col-md-6">
+        <label class="form-label text-light small fw-semibold">Apellido Paterno</label>
+        <input type="text" class="form-control-custom" placeholder="Pérez" formControlName="firstLastName" />
+
+        <label class="text-danger">
+          @if (formData.get('firstLastName')?.touched) {
+          @if (formData.get('firstLastName')?.errors?.['required']) {
+          Campo obligatorio
+          }
+          @if (
+          formData.get('firstLastName')?.errors?.['maxlength'] ||
+          formData.get('firstLastName')?.errors?.['minlength']
+          ) {
+          Límite de carácteres (4-50)
+          }
+          }
+        </label>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label text-light small fw-semibold">Apellido Materno</label>
+        <input type="text" class="form-control-custom" placeholder="García" formControlName="secondLastName" />
+
+        <label class="text-danger">
+          @if (formData.get('secondLastName')?.touched) {
+          @if (formData.get('secondLastName')?.errors?.['required']) {
+          Campo obligatorio
+          }
+          @if (
+          formData.get('secondLastName')?.errors?.['maxlength'] ||
+          formData.get('secondLastName')?.errors?.['minlength']
+          ) {
+          Límite de carácteres (4-50)
+          }
+          }
+        </label>
+      </div>
+
+      <!-- Email & DNI -->
+      <div class="col-md-7">
+        <label class="form-label text-light small fw-semibold">Correo Electrónico</label>
+        <input type="email" class="form-control-custom" placeholder="juan.pg@ejemplo.com" formControlName="email" />
+
+        <label class="text-danger">
+          @if (formData.get('email')?.touched) {
+          @if (formData.get('email')?.errors?.['required']) {
+          Campo obligatorio
+          }
+          @if (
+          formData.get('email')?.errors?.['email'] ||
+          formData.get('email')?.errors?.['lastWord']
+          ) {
+          Ingrese un email válido @gmail.com
+          } @else if (
+          formData.get('email')?.errors?.['maxlength'] ||
+          formData.get('email')?.errors?.['minlength']
+          ) {
+          Límite de carácteres (6-50)
+          }
+          }
+        </label>
+      </div>
+      <div class="col-md-5">
+        <label class="form-label text-light small fw-semibold">DNI / Documento</label>
+        <input type="text" class="form-control-custom" placeholder="8 dígitos" formControlName="dni" />
+
+        <label class="text-danger">
+          @if (formData.get('dni')?.touched) {
+          @if (formData.get('dni')?.errors?.['required']) {
+          Campo obligatorio
+          }
+          @if (
+          formData.get('dni')?.errors?.['maxlength'] ||
+          formData.get('dni')?.errors?.['minlength']
+          ) {
+          Ingrese un dni Válido
+          }
+          }
+        </label>
+      </div>
+
+      <!-- Password & Role -->
+      @if(mode() !== 'edit'){
+      <div class="col-md-6">
+        <label class="form-label text-light small fw-semibold">Contraseña</label>
+        <input type="password" class="form-control-custom" placeholder="••••••••" formControlName="password" />
+
+        <label class="text-danger">
+          @if (formData.get('password')?.touched) {
+          @if (formData.get('password')?.errors?.['required']) {
+          Campo obligatorio
+          }
+          @if (
+          formData.get('password')?.errors?.['maxlength'] ||
+          formData.get('password')?.errors?.['minlength']
+          ) {
+          Límite de carácteres (4-16)
+          }
+          }
+        </label>
+      </div>
+      }
+      <div class="col-md-6">
+        <label class="form-label text-light small fw-semibold">Rol de Usuario</label>
+        <select class="form-select-custom" formControlName="role">
+          <option value="student">Estudiante</option>
+          <option value="admin">Administrador</option>
+        </select>
+
+        <label class="text-danger">
+          @if (formData.get('secondLastName')?.touched) {
+          @if (formData.get('secondLastName')?.errors?.['required']) {
+          Campo obligatorio
+          }
+          }
+        </label>
+      </div>
+
+      <!-- Footer -->
+      <div class="modal-footer border-0 pt-0">
+        <button type="button" class="btn-cancel" (click)="modalActivate?.close()">
+          Cancelar
+        </button>
+        <button type="submit" class="btn-submit">
+          <span>Guardar Usuario</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ms-2">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

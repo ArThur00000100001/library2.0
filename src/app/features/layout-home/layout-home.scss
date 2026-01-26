@@ -165,8 +165,8 @@
         }
       }
 
-      &.active {
-        a {
+      
+        a.active {
           background-color: var(--active-bg);
           color: var(--accent-color);
           
@@ -174,7 +174,7 @@
             color: var(--accent-color);
           }
         }
-      }
+      
     }
   }
 }

@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from "@angular/core";
-import { RouterOutlet } from "@angular/router";
+import { RouterOutlet, RouterLinkActive } from "@angular/router";
+import { RouterLink } from "@angular/router";
 import { AuthService } from "../../core/guard/auth.service";
 
 @Component({
@@ -8,7 +9,7 @@ import { AuthService } from "../../core/guard/auth.service";
   styleUrl: './layout-home.scss',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive],
 })
 export class LayoutHomeComponent {
   readonly authService = inject(AuthService)

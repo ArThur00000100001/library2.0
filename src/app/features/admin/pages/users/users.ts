@@ -1,7 +1,8 @@
-import { Component, ChangeDetectionStrategy, signal, inject } from '@angular/core';
+import { Component, ChangeDetectionStrategy, signal, inject, computed } from '@angular/core';
 import { apiUserService } from './apiUser.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UsersFormComponent } from './usersFormAdmin/userFormAdmin';
+import { IUser } from '../../models/types';
 
 @Component({
   selector: 'app-users',
@@ -14,6 +15,10 @@ export class UsersComponent {
   readonly modalService = inject(NgbModal);
 
   readonly usersList = signal<IUser[]>([]);
+  readonly newsUser = computed(() => {
+    const users = this.usersList();
+    return '0';
+  });
 
   constructor() {
     this.getList();
@@ -35,8 +40,8 @@ export class UsersComponent {
       });
       const component: UsersFormComponent = ref.componentInstance;
       component.mode.set(mode);
-      component.user.set(data)
-      
+      component.user.set(data);
+
       //if(mode === 'edit')
       const result: IUser | undefined = await ref.result;
 
@@ -46,8 +51,8 @@ export class UsersComponent {
       mode == 'edit'
         ? this.usersList.update((user) => user.map((u) => (u.id === result.id ? result : u)))
         : null;
-    } catch(error) {
-        console.log('error en el modal de usuarios: ', error)
+    } catch (error) {
+      console.log('error en el modal de usuarios: ', error);
     }
   }
 }

@@ -5,6 +5,7 @@ import { RegisterComponent } from './features/auth/register/register';
 import { authGuard } from './core/guard/auth.guard';
 import { HomeComponent } from './features/admin/pages/home/home';
 import { UsersComponent } from './features/admin/pages/users/users';
+import { BookTitleComponent } from './features/admin/pages/title-books/book-titles';
 
 export const routes: Routes = [
     {
@@ -24,7 +25,8 @@ export const routes: Routes = [
                 children: [
                     {path: '', redirectTo: 'users', pathMatch: 'full'},
                     //{path: 'home', component: HomeComponent},
-                    {path: 'users', component: UsersComponent}
+                    {path: 'users', component: UsersComponent},
+                    {path: 'book-titles', component: BookTitleComponent}
 
                 ]
             }

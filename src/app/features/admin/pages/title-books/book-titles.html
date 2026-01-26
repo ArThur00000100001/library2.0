@@ -1,12 +1,12 @@
-<div class="users-page">
+<div class="books-page">
     <!-- Page Header -->
     <header class="page-header">
         <div class="header-info">
-            <h1>Gestión de Usuarios</h1>
-            <p>Administra los permisos y perfiles de los usuarios del sistema.</p>
+            <h1>Gestión de Libros</h1>
+            <p>Administra el catálogo de títulos y el inventario de copias.</p>
         </div>
         <div class="header-actions">
-            <button class="btn btn-secondary" id="importUsersBtn" (click)="formUser('import')">
+            <button class="btn btn-secondary">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v4"></path>
@@ -15,13 +15,13 @@
                 </svg>
                 Importar
             </button>
-            <button class="btn btn-primary" id="addUserBtn" (click)="formUser('create')">
+            <button class="btn btn-primary">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <line x1="12" y1="5" x2="12" y2="19"></line>
                     <line x1="5" y1="12" x2="19" y2="12"></line>
                 </svg>
-                Nuevo Usuario
+                Nuevo Libro
             </button>
         </div>
     </header>
@@ -29,22 +29,33 @@
     <!-- Stats Summary -->
     <section class="stats-grid">
         <div class="stat-card">
-            <div class="stat-icon">
+            <div class="stat-icon pink-theme">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
-                    <circle cx="9" cy="7" r="4"></circle>
-                    <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
-                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
                 </svg>
             </div>
             <div class="stat-details">
-                <span class="stat-value">{{usersList().length}}</span>
-                <span class="stat-label">Total Usuarios</span>
+                <span class="stat-value"></span>
+                <span class="stat-label">Títulos Registrados</span>
             </div>
         </div>
         <div class="stat-card">
-            <div class="stat-icon" style="color: #10b981; background-color: rgba(16, 185, 129, 0.1);">
+            <div class="stat-icon blue-theme">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                    <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                </svg>
+            </div>
+            <div class="stat-details">
+                <span class="stat-value"></span>
+                <span class="stat-label">Copias Totales</span>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon green-theme">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
@@ -52,20 +63,8 @@
                 </svg>
             </div>
             <div class="stat-details">
-                <span class="stat-value">{{newsUser()}}</span>
-                <span class="stat-label">Activos</span>
-            </div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-icon" style="color: #f59e0b; background-color: rgba(245, 158, 11, 0.1);">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
-                </svg>
-            </div>
-            <div class="stat-details">
-                <span class="stat-value"></span>
-                <span class="stat-label">Nuevos hoy</span>
+                <span class="stat-value">Disponible</span>
+                <span class="stat-label">Estado de Almacén</span>
             </div>
         </div>
     </section>
@@ -78,63 +77,81 @@
                 <circle cx="11" cy="11" r="8"></circle>
                 <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
             </svg>
-            <input type="text" placeholder="Buscar por nombre, email o DNI..." id="userSearch">
+            <input type="text" placeholder="Buscar por título, autor o ISBN...">
         </div>
         <div class="filter-options">
-            <select id="roleFilter">
-                <option value="">Todos los Roles</option>
-                <option value="admin">Administrador</option>
-                <option value="student">Estudiante</option>
+            <select>
+                <option value="">Todas las Categorías</option>
+                <option value="fiction">Ficción</option>
+                <option value="non-fiction">No Ficción</option>
             </select>
-            <select id="statusFilter">
-                <option value="">Cualquier Estado</option>
-                <option value="active">Activo</option>
-                <option value="inactive">Inactivo</option>
+            <select>
+                <option value="">Ordenar por...</option>
+                <option value="newest">Más recientes</option>
+                <option value="title">Título A-Z</option>
             </select>
         </div>
     </div>
 
-    <!-- Users Table -->
+    <!-- Books Table -->
     <div class="table-container">
-        <table class="">
+        <table>
             <thead>
                 <tr>
-                    <th>DNI / ID</th>
-                    <th>Usuario</th>
-                    <th>Rol</th>
-                    <th>Estado</th>
-                    <th>Registro</th>
+                    <th>Información del Libro</th>
+                    
+                    <th>Año</th>
+                    <th>ISBN</th>
+                    <th>Copias</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
-                <!-- Mock Data Row 1 -->
-                @for (item of usersList(); track $index) {
-
+                @for (book of bookTitleList(); track book.id) {
                 <tr>
-                    <td><code style="color: #94a3b8;">{{item.dni}}</code></td>
                     <td>
-                        <div class="user-cell">
-                            <div class="avatar">JP</div>
-                            <div class="user-meta">
-                                <span class="name">{{item.fullName}}</span>
-                                <span class="email">{{item.email}}</span>
+                        <div class="book-cell">
+                            <div class="book-cover">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                                </svg>
+                            </div>
+                            <div class="book-meta">
+                                <span class="title">{{ book.title }}</span>
+                                <span class="author">{{ book.author }}</span>
                             </div>
                         </div>
                     </td>
                     <td>
-                        <span class="role-badge admin">{{item.role}}</span>
-                    </td>
-
-                    <td>
-                        <span class="status-indicator active text-light">Activo</span>
+                        <span class="text-light">{{ book.publicationYear }}</span>
                     </td>
                     <td>
-                        <span class="text-light">{{item.joinDate}}</span>
+                        <code class="isbn-code">{{ book.isbn }}</code>
+                    </td>
+                    <td>
+                        <div class="copies-indicator">
+                            <!-- <span class="current">{{  }}</span>
+                            <span class="separator">/</span> -->
+                            <span class="total">{{ book.copies?.length }}</span>
+                        </div>
                     </td>
                     <td>
                         <div class="action-buttons">
-                            <button class="btn-icon edit" title="Editar" (click)="formUser('edit', item)">
+                            <!-- Button 1: View Copies -->
+                            <button class="btn-icon copies" title="Ver Copias">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M2 17h20"></path>
+                                    <path d="M2 12h20"></path>
+                                    <path d="M2 7h20"></path>
+                                </svg>
+                            </button>
+                            <!-- Button 2: Edit -->
+                            <button class="btn-icon edit" title="Editar">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                     stroke-linejoin="round">
@@ -142,6 +159,7 @@
                                     <path d="M18.5 2.5a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
                                 </svg>
                             </button>
+                            <!-- Button 3: Delete -->
                             <button class="btn-icon delete" title="Eliminar">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -157,14 +175,13 @@
                         </div>
                     </td>
                 </tr>
-
                 }
             </tbody>
         </table>
 
         <!-- Pagination -->
         <div class="pagination">
-            <span>Mostrando 1-10 de 1,284 usuarios</span>
+            <span>Mostrando títulos del catálogo</span>
             <div class="page-nav">
                 <button class="btn-icon" disabled>
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
@@ -172,54 +189,13 @@
                         <polyline points="15 18 9 12 15 6"></polyline>
                     </svg>
                 </button>
-                <button class="btn-icon" style="color: white; border-color: #6366f1;">1</button>
-                <button class="btn-icon">2</button>
-                <button class="btn-icon">3</button>
+                <button class="btn-icon active-page">1</button>
                 <button class="btn-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <polyline points="9 18 15 12 9 6"></polyline>
                     </svg>
                 </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal Overlay -->
-    <div class="modal-overlay" id="userModal" style="display: none;">
-        <div class="modal-content">
-            <header class="modal-header">
-                <h2>Añadir Nuevo Usuario</h2>
-                <button class="close-btn">&times;</button>
-            </header>
-            <div class="modal-body">
-                <form class="modal-form">
-                    <div class="form-grid">
-                        <div class="form-group-item">
-                            <label>Nombre Completo</label>
-                            <input type="text" placeholder="Ej. Juan Pérez">
-                        </div>
-                        <div class="form-group-item">
-                            <label>Correo Electrónico</label>
-                            <input type="email" placeholder="ejemplo@gmail.com">
-                        </div>
-                        <div class="form-group-item">
-                            <label>DNI / ID</label>
-                            <input type="text" placeholder="8 dígitos">
-                        </div>
-                        <div class="form-group-item">
-                            <label>Rol</label>
-                            <select>
-                                <option value="student">Estudiante</option>
-                                <option value="admin">Administrador</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary">Cancelar</button>
-                        <button type="submit" class="btn btn-primary">Guardar Usuario</button>
-                    </div>
-                </form>
             </div>
         </div>
     </div>

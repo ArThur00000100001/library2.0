@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { ApiFetchService } from '../../../services/apiFetch.service';
 import { ToastrService } from 'ngx-toastr';
 import { API } from '../../../environment/environment';
+import { IUser } from '../../models/types';
 
 @Injectable({
   providedIn: 'root',
