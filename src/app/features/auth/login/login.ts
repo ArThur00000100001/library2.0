@@ -12,6 +12,7 @@ import { Router, RouterLink } from '@angular/router';
 import { ApiFetchService } from '../../services/apiFetch.service';
 import { API } from '../../environment/environment';
 import { AuthService } from '../../../core/guard/auth.service';
+import { ValidateLastWord } from '../../functions/Validators/validatorsFunctions';
 
 @Component({
   selector: 'app-login',
@@ -30,7 +31,7 @@ export class LoginComponent {
     email: new FormControl('', [
       Validators.required,
       Validators.email,
-      //this.ValidateLastWord('gmail.com'),
+      //ValidateLastWord('@gmail.com'),
       Validators.maxLength(50),
     ]),
     password: new FormControl('', [
@@ -64,12 +65,5 @@ export class LoginComponent {
 
   }
 
-  //Validacion personalizada - retorna true si en caso la ultima parabra no coincide
-  ValidateLastWord(lastWord: string): ValidatorFn {
-    return (control: AbstractControl): ValidationErrors | null => {
-      if (!control.value) return null;
-      const valueControl = control.value;
-      return valueControl.endsWith(lastWord) ? null : { lastWord: true };
-    };
-  }
+  
 }
