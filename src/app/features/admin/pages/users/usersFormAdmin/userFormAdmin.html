@@ -16,7 +16,7 @@
       Completa la información detallada para registrar un nuevo usuario en la biblioteca.
     </p>
 
-    <form class="row g-3" [formGroup]="formData" (ngSubmit)="create()">
+    <form class="row g-3" [formGroup]="formData" (ngSubmit)="submitData()">
       <!-- Full Name -->
       <div class="col-12">
         <label class="form-label text-light small fw-semibold">Nombre Completo</label>
@@ -103,7 +103,7 @@
       </div>
       <div class="col-md-5">
         <label class="form-label text-light small fw-semibold">DNI / Documento</label>
-        <input type="text" class="form-control-custom" placeholder="8 dígitos" formControlName="dni" />
+        <input type="text" class="form-control-custom" placeholder="8 dígitos" formControlName="dni" [readOnly]="mode() == 'edit' ? true : false" />
 
         <label class="text-danger">
           @if (formData.get('dni')?.touched) {

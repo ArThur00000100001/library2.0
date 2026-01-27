@@ -16,7 +16,7 @@
       Completa la información detallada para registrar un nuevo usuario en la biblioteca.
     </p>
 
-    <form class="row g-3" [formGroup]="formData" (ngSubmit)="create()">
+    <form class="row g-3" [formGroup]="formData" (ngSubmit)="submitData()">
       <!-- Full Name -->
       <div class="col-12">
         <label class="form-label text-light small fw-semibold">Titulo</label>
@@ -99,7 +99,7 @@
           }
         </label>
       </div>
-      
+
 
       <!-- Footer -->
       <div class="modal-footer border-0 pt-0">

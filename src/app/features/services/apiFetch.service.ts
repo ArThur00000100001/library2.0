@@ -4,42 +4,45 @@ import { AuthService } from '../../core/guard/auth.service';
 import { ToastrService } from 'ngx-toastr';
 
 export type IApiResponse<T = any> = {
-  status: 'success' | 'failure';
-  data: T;
-  message: string;
+    status: 'success' | 'failure';
+    data: T;
+    message: string;
 };
 
 @Injectable({
-  providedIn: 'root',
+    providedIn: 'root',
 })
 export class ApiFetchService {
-  readonly authService = inject(AuthService);
-  readonly toastrService = inject(ToastrService)
+    readonly authService = inject(AuthService);
+    readonly toastrService = inject(ToastrService);
 
-  private async _fetch(
-    method: string,
-    url: string,
-    body: Record<string, any> = {},
-    authorization: string | null = null,
-  ) {
-    let res: Response;
+    private async _fetch(
+        method: string,
+        url: string,
+        body: Record<string, any> = {},
+        authorization: string | null = null,
+    ) {
         const headers: Record<string, string> = {
             'Content-Type': 'application/json',
         };
 
         if (authorization) headers['Authorization'] = `Bearer ${authorization}`;
 
-        res = await fetch(url, {
+        return await fetch(url, {
             method: method,
             headers: headers,
             body: method === 'GET' || method === 'DELETE' ? undefined : JSON.stringify(body),
-        });
+        })
+            .then((res) => {
+                return res.json();
+            })
+            .catch((err) => {
+                console.log(err);
+                return { status: 'failure', data: null, message: err.message };
+            });
+    }
 
-        if (!res.ok) return { status: 'failure', data: null, message: 'Petición fallida' };
-        return await res.json();
-  }
-
-   _fetchAuth = async <T = any>(method: string, url: string, body: Record<string, any> = {}) => {
+    _fetchAuth = async <T = any>(method: string, url: string, body: Record<string, any> = {}) => {
         const res = (await this._fetch(
             method,
             url,
@@ -47,11 +50,35 @@ export class ApiFetchService {
             this.authService.token(),
         )) as IApiResponse<T>;
 
-        if (res.status == 'failure' || res.status !== 'success')
-            this.toastrService.error(res.message, 'Error');
+        this.toasrMessageError(res);
 
         return res;
     };
+
+    toasrMessageError(res: IApiResponse) {
+        if (!(res.status == 'failure' || res.status !== 'success')) return;
+
+        const key = 'FK_4c2ab4e556520045a2285916d45';
+        const key2 = 'FK_3a6175e9b73462f3e8dc057edb6';
+
+        if (res.message.includes(key)) {
+            console.log('Funciona');
+            this.toastrService.error(
+                `No se puede eliminar a un usuario que realizó un prestamo`,
+                `Error: ${key} `,
+            );
+        }
+        if (res.message.includes(key2)) {
+            this.toastrService.error(
+                'No se puede eliminar un libro que tiene una copia',
+                `Error: ${key2}`,
+            );
+        }
+        // } else {
+        //     this.toastrService.error(res.message, 'Error');
+        // }
+    }
+
     //get
     get = async (url: string) => this._fetch('GET', url);
 

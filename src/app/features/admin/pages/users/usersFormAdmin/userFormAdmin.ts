@@ -88,20 +88,31 @@ export class UsersFormComponent {
   }
 
   async submitData() {
-    this.formData.markAllAsTouched();
-    if (this.formData.invalid) return;
-
+    if (this.checkValidations()) return;
     if (this.mode() == 'create') await this.create();
     if (this.mode() == 'edit') await this.edit();
   }
 
   async create() {
     const response = await this.apiUserService.create(this.formData.value);
-    if ((response.status == 'success')) this.modalActivate?.close(response.data);
+    if (response.status == 'success') this.modalActivate?.close(response.data);
   }
   async edit() {
-    //const {password, ...data} = this.formData.value
-    const response = await this.apiUserService.edit(this.user()?.id!, this.formData.value);
-    if ((response.status == 'success')) this.modalActivate?.close(response.data);
+    const { dni, ...data } = this.formData.value;
+    console.log(data);
+    const response = await this.apiUserService.edit(this.user()?.id!, data);
+
+    if (response.status == 'success') this.modalActivate?.close(response.data);
+  }
+
+  checkValidations(): boolean {
+    if (this.mode() == 'edit') {
+      this.formData.get('password')?.clearValidators();
+      this.formData.get('dni')?.clearValidators();
+    }
+
+    this.formData.markAllAsTouched();
+    if (this.formData.invalid) return true;
+    return false;
   }
 }
