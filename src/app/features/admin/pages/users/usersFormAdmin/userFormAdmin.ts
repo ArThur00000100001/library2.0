@@ -97,11 +97,11 @@ export class UsersFormComponent {
 
   async create() {
     const response = await this.apiUserService.create(this.formData.value);
-    if ((response.status = 'success')) this.modalActivate?.close(response.data);
+    if ((response.status == 'success')) this.modalActivate?.close(response.data);
   }
   async edit() {
     //const {password, ...data} = this.formData.value
     const response = await this.apiUserService.edit(this.user()?.id!, this.formData.value);
-    if ((response.status = 'success')) this.modalActivate?.close(response.data);
+    if ((response.status == 'success')) this.modalActivate?.close(response.data);
   }
 }

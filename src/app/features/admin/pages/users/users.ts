@@ -55,4 +55,11 @@ export class UsersComponent {
       console.log('error en el modal de usuarios: ', error);
     }
   }
+
+  async eliminate(id: number){
+    
+    const response = await this.apiUserService.delete(id)
+    if(response.status == 'success') 
+    this.usersList.update((y) =>  y.filter((x) => x.id !== id))
+  }
 }

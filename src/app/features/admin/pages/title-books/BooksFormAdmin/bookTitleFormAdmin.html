@@ -1,0 +1,120 @@
+<div class="modal-container">
+  <!-- Header -->
+  <div class="modal-header border-0 pb-0">
+    <h5 class="modal-title h4 fw-bold text-white">
+      <span class="accent-line"></span>
+
+      {{ mode() === 'create' ? 'Registrar' : mode() === 'edit' ? 'Editar' : 'Importar' }}
+    </h5>
+    <button type="button" class="btn-close btn-close-white" aria-label="Close"
+      (click)="modalActivate?.close()"></button>
+  </div>
+
+  <!-- Body -->
+  <div class="modal-body py-4">
+    <p class="text-secondary small mb-4">
+      Completa la información detallada para registrar un nuevo usuario en la biblioteca.
+    </p>
+
+    <form class="row g-3" [formGroup]="formData" (ngSubmit)="create()">
+      <!-- Full Name -->
+      <div class="col-12">
+        <label class="form-label text-light small fw-semibold">Titulo</label>
+        <div class="input-group-custom">
+          <input type="text" class="form-control-custom" placeholder="Ej. Cenicienta" formControlName="title" />
+        </div>
+
+        <label class="text-danger">
+          @if (formData.get('title')?.touched) {
+          @if (formData.get('title')?.errors?.['required']) {
+          Campo obligatorio
+          }
+          @if (
+          formData.get('title')?.errors?.['maxlength']
+          ) {
+          Límite de carácteres (255)
+          }
+          }
+        </label>
+      </div>
+
+      <!-- Last Names -->
+      <div class="col-md-6">
+        <label class="form-label text-light small fw-semibold">Autor</label>
+        <input type="text" class="form-control-custom" placeholder="Autor..." formControlName="author" />
+
+        <label class="text-danger">
+          @if (formData.get('author')?.touched) {
+          @if (formData.get('author')?.errors?.['required']) {
+          Campo obligatorio
+          }
+          @if (
+          formData.get('author')?.errors?.['maxlength'] ||
+          formData.get('author')?.errors?.['minlength']
+          ) {
+          Límite de carácteres (4-50)
+          }
+          }
+        </label>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label text-light small fw-semibold">Año de publicación</label>
+        <input type="number" class="form-control-custom" placeholder="..." formControlName="publicationYear" />
+
+        <label class="text-danger">
+          @if (formData.get('publicationYear')?.touched) {
+          @if (formData.get('publicationYear')?.errors?.['required']) {
+          Campo obligatorio
+          }
+          @if (
+          formData.get('publicationYear')?.errors?.['maxlength'] ||
+          formData.get('publicationYear')?.errors?.['minlength']
+          ) {
+          Límite de carácteres (4-4)
+          }
+          }
+        </label>
+      </div>
+
+      <!-- Email & DNI -->
+      <div class="col-md-7">
+        <label class="form-label text-light small fw-semibold">Isbn</label>
+        <input type="email" class="form-control-custom" placeholder="Isbn" formControlName="isbn" />
+
+        <label class="text-danger">
+          @if (formData.get('isbn')?.touched) {
+          @if (formData.get('isbn')?.errors?.['required']) {
+          Campo obligatorio
+          }
+          @if (
+          formData.get('isbn')?.errors?.['lastWord']
+          ) {
+          Ingrese un email válido @gmail.com
+          } @else if (
+          formData.get('isbn')?.errors?.['maxlength'] ||
+          formData.get('isbn')?.errors?.['minlength']
+          ) {
+          Límite de carácteres (255)
+          }
+          }
+        </label>
+      </div>
+      
+
+      <!-- Footer -->
+      <div class="modal-footer border-0 pt-0">
+        <button type="button" class="btn-cancel" (click)="modalActivate?.close()">
+          Cancelar
+        </button>
+        <button type="submit" class="btn-submit">
+          <span>Guardar Usuario</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ms-2">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
