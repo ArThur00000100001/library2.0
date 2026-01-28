@@ -1,9 +1,18 @@
-import { Component, signal, computed, ChangeDetectionStrategy, inject, model } from '@angular/core';
+import {
+    Component,
+    signal,
+    computed,
+    ChangeDetectionStrategy,
+    inject,
+    model,
+    resource,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IBookTitle } from '../../models/types';
 import { BooksTitlesApiService } from './apiBookTitles.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BookTitleFormComponent } from './BooksFormAdmin/bookTitleFormAdmin';
+import { CopyBookComponent } from './books/copy-book';
 
 @Component({
     selector: 'app-book-titles',
@@ -17,8 +26,16 @@ export class BookTitleComponent {
     // Signal for books list
     readonly apiBookTitleService = inject(BooksTitlesApiService);
     readonly modalService = inject(NgbModal);
-    readonly mode = model<'create' | 'edit' | 'import'>('create');
     readonly bookTitleList = signal<IBookTitle[]>([]);
+
+    readonly totalCopys = computed(() => {
+        let total = 0;
+        const listBooks = this.bookTitleList();
+        listBooks.forEach((x) => {
+            x.copies!.length > 0 ? (total += x.copies!.length) : null;
+        });
+        return total;
+    });
     constructor() {
         this.getList();
     }
@@ -51,6 +68,30 @@ export class BookTitleComponent {
                 : null;
         } catch (error) {
             console.log('Error al crear un libro: ', error);
+        }
+    }
+
+    async openCopyModal(data: IBookTitle) {
+        try {
+            const ref = this.modalService.open(CopyBookComponent, {
+                size: 'lg',
+                //backdrop: 'static',
+            });
+            const component: CopyBookComponent = ref.componentInstance;
+            component.bookTitle.set(data);
+
+            // Al cerrar o dar click fuera (dismiss), capturamos el valor actual del model signal
+            const result: IBookTitle | undefined = await ref.result.catch(() =>
+                component.bookTitle(),
+            );
+
+            if (result) {
+                this.bookTitleList.update((list) =>
+                    list.map((b) => (b.id === result.id ? result : b)),
+                );
+            }
+        } catch (err) {
+            console.log('Error', err);
         }
     }
 

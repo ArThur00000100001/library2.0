@@ -1,4 +1,88 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap');
 @import 'ngx-toastr/toastr';
-/* Importing Bootstrap SCSS file. */
 @import 'bootstrap/scss/bootstrap';
+
+:root {
+  /* Blue, White, and Red Library Palette (Pastels & Sophisticated) */
+  --lib-bg: #F8FAFC;           /* Clean Page White */
+  --lib-surface: #FFFFFF;
+  --lib-primary: #334155;      /* Slate blue-gray (Library Blue) */
+  --lib-primary-light: #64748B;
+  --lib-secondary: #991B1B;    /* Deep Red accent */
+  --lib-secondary-light: #EF4444;
+  --lib-accent: #E0E7FF;       /* Soft Indigo/Blue */
+  --lib-text: #0F172A;         /* Deep Navy Text */
+  --lib-text-muted: #64748B;
+  --lib-border: #E2E8F0;
+  --lib-success: #059669;
+  --lib-error: #B91C1C;        /* Classical Red */
+  
+  /* Shared Defaults */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.06);
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body {
+  background-color: var(--lib-bg);
+  color: var(--lib-text);
+  font-family: 'Outfit', sans-serif;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, .brand-font {
+  font-family: 'Playfair Display', serif;
+  color: var(--lib-text);
+}
+
+/* Global button overrides */
+.btn-primary {
+  background-color: var(--lib-primary) !important;
+  border-color: var(--lib-primary) !important;
+  color: white !important;
+  border-radius: var(--radius-md);
+  padding: 0.6rem 1.5rem;
+  font-weight: 500;
+  transition: var(--transition);
+  
+  &:hover {
+    background-color: var(--lib-primary-light) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(51, 65, 85, 0.2);
+  }
+}
+
+.card {
+  border: none;
+  background: var(--lib-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  overflow: hidden;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--lib-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--lib-accent);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--lib-primary);
+}
+
+.ngx-toastr.toast-error {
+  position: fixed;
+  
+  right: 20px;
+}
