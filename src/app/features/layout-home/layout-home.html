@@ -2,11 +2,7 @@
     <div class="sidebar-header">
         <div class="logo">
             <div class="logo-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-0.5-5z"></path>
-                    <path d="M6.5 17.5L20 17.5"></path>
-                </svg>
+                <i class="bi bi-book fs-4"></i>
             </div>
             <span class="logo-text">Biblioteca 2.0</span>
         </div>
@@ -27,49 +23,26 @@
             <p class="section-title">ADMINISTRACIÓN</p>
             <ul class="nav-list">
                 <li class="nav-item active">
-                    <a href="#">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="3" y="3" width="7" height="7"></rect>
-                            <rect x="14" y="3" width="7" height="7"></rect>
-                            <rect x="14" y="14" width="7" height="7"></rect>
-                            <rect x="3" y="14" width="7" height="7"></rect>
-                        </svg>
+                    <a routerLink="/admin/home" routerLinkActive="active">
+                        <i class="bi bi-grid-fill"></i>
                         <span>Dashboard</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a routerLink="/admin/users" routerLinkActive="active">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
-                            <circle cx="9" cy="7" r="4"></circle>
-                            <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
-                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                        </svg>
+                        <i class="bi bi-people"></i>
                         <span>Usuarios</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a routerLink="/admin/book-titles" routerLinkActive="active" >
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-0.5-5z"></path>
-                            <path d="M6.5 17.5L20 17.5"></path>
-                        </svg>
+                    <a routerLink="/admin/book-titles" routerLinkActive="active">
+                        <i class="bi bi-journal-text"></i>
                         <span>Libros</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="#">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="1" y="3" width="15" height="13" rx="2" ry="2"></rect>
-                            <line x1="16" y1="8" x2="20" y2="8"></line>
-                            <line x1="16" y1="12" x2="20" y2="12"></line>
-                            <line x1="18" y1="16" x2="18" y2="21"></line>
-                            <line x1="14" y1="21" x2="22" y2="21"></line>
-                        </svg>
+                        <i class="bi bi-calendar-check"></i>
                         <span>Préstamos</span>
                     </a>
                 </li>
@@ -79,12 +52,7 @@
 
     <div class="sidebar-footer">
         <button class="logout-btn" (click)="logout()">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                <polyline points="16 17 21 12 16 7"></polyline>
-                <line x1="21" y1="12" x2="9" y2="12"></line>
-            </svg>
+            <i class="bi bi-box-arrow-right"></i>
             <span>Cerrar Sesión</span>
         </button>
     </div>
@@ -93,13 +61,8 @@
 <div class="sidebar-overlay" [class.visible]="isOpen()" (click)="toggleSidebar()"></div>
 
 <button class="sidebar-toggle" [class.collapsed-btn]="!isOpen()" (click)="toggleSidebar()">
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <line x1="3" y1="12" x2="21" y2="12"></line>
-        <line x1="3" y1="6" x2="21" y2="6"></line>
-        <line x1="3" y1="18" x2="21" y2="18"></line>
-    </svg>
+    <i class="bi bi-list fs-3"></i>
 </button>
 <main>
-<router-outlet></router-outlet>
+    <router-outlet></router-outlet>
 </main>

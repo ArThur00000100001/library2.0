@@ -60,18 +60,25 @@ export class ApiFetchService {
 
         const key = 'FK_4c2ab4e556520045a2285916d45';
         const key2 = 'FK_3a6175e9b73462f3e8dc057edb6';
+        const key3 = 'FK_aad54a9134e293d4d3be70db995';
 
         if (res.message.includes(key)) {
             console.log('Funciona');
             this.toastrService.error(
-                `No se puede eliminar a un usuario que realizó un prestamo`,
+                `No se puede eliminar a un usuario que realizó un prestamo.`,
                 `Error: ${key} `,
             );
         }
         if (res.message.includes(key2)) {
             this.toastrService.error(
-                'No se puede eliminar un libro que tiene una copia',
+                'No se puede eliminar un libro que tiene una copia.',
                 `Error: ${key2}`,
+            );
+        }
+        if (res.message.includes(key3)) {
+            this.toastrService.error(
+                'No se puede eliminar una copia que aun no ha sido devuelta.',
+                `Error: ${key3}`,
             );
         }
         // } else {

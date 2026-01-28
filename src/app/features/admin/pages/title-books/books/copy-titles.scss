@@ -51,9 +51,9 @@
             border: none;
             font-size: 0.95rem;
 
-            svg {
-                width: 20px;
-                height: 20px;
+            svg, i {
+                font-size: 1.25rem;
+                line-height: 1;
             }
 
             &.btn-primary {
@@ -170,14 +170,13 @@
         flex: 1;
         max-width: 450px;
 
-        svg {
+        svg, i {
             position: absolute;
             left: 1.25rem;
             top: 50%;
             transform: translateY(-50%);
             color: var(--lib-text-muted);
-            width: 20px;
-            height: 20px;
+            font-size: 1.1rem;
         }
 
         input {
