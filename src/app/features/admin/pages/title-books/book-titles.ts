@@ -39,7 +39,7 @@ export class BookTitleComponent {
     constructor() {
         this.getList();
     }
-    //Obtiene la lista de usuarios con el backent
+
     async getList() {
         const response = await this.apiBookTitleService.list();
         if (response.length == 0) return;

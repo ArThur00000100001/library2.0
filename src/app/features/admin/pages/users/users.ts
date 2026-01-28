@@ -3,6 +3,7 @@ import { apiUserService } from './apiUser.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UsersFormComponent } from './usersFormAdmin/userFormAdmin';
 import { IUser } from '../../models/types';
+import { ApiContentListService } from '../../../services/contentList/api-content-list.service';
 
 @Component({
     selector: 'app-users',
@@ -13,6 +14,7 @@ import { IUser } from '../../models/types';
 export class UsersComponent {
     readonly apiUserService = inject(apiUserService);
     readonly modalService = inject(NgbModal);
+    readonly apiContentListService = inject(ApiContentListService);
 
     readonly usersList = signal<IUser[]>([]);
     readonly newsUser = computed(() => {
@@ -24,7 +26,7 @@ export class UsersComponent {
         this.getList();
     }
 
-    //Obtiene la lista de usuarios con el backent
+    //Obtiene la lista de usuarios
     async getList() {
         const response = await this.apiUserService.list();
         if (response.length == 0) return;

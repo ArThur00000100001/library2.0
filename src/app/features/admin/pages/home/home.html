@@ -1,8 +1,8 @@
 <div class="home-container">
     <header class="home-header">
         <div class="welcome-text">
-            <h1>Bienvenido a su Biblioteca Digital</h1>
-            <p>Gestione sus colecciones, usuarios y préstamos con elegancia y facilidad.</p>
+            <h1>Panel de Control Administrativo</h1>
+            <p>Resumen ejecutivo de la biblioteca y acceso directo a los módulos de gestión.</p>
         </div>
         <div class="date-display">
             <i class="bi bi-calendar3"></i>
@@ -38,50 +38,91 @@
                 <i class="bi bi-arrow-left-right"></i>
             </div>
             <div class="stat-info">
-                <h3>Préstamos Hoy</h3>
+                <h3>Préstamos Activos</h3>
                 <p class="value">42</p>
                 <p class="trend">15 por devolver</p>
             </div>
         </div>
     </section>
 
-    <section class="dashboard-content">
-        <div class="content-main">
-            <div class="featured-card glass-panel">
-                <div class="featured-info">
-                    <h2>Explora la Colección</h2>
-                    <p>Descubre los libros más populares y las nuevas adquisiciones de la semana.</p>
-                    <a routerLink="/admin/book-titles"><button class="btn btn-primary">Ver Catálogo
-                            Completo</button></a>
+    <section class="modules-summary">
+        <div class="section-title">
+            <h2>Secciones</h2>
+            <p>Acceso rápido a todos los recursos administrativos del sistema</p>
+        </div>
+
+        <div class="modules-grid">
+            <!-- Gestión de Usuarios -->
+            <a routerLink="/admin/users" class="module-item reveal-1">
+                <div class="module-icon users">
+                    <i class="bi bi-person-gear"></i>
                 </div>
-                <div class="featured-image">
-                    <img src="https://images.unsplash.com/photo-1521587760476-6c12a4b040da?q=80&w=2070&auto=format&fit=crop"
-                        alt="Colección">
+                <div class="module-details">
+                    <h3>Usuarios</h3>
+                    <p>Administración de cuentas, roles y perfiles de lectores.</p>
+                    <div class="module-meta">
+                        <span class="action">Entrar <i class="bi bi-chevron-right"></i></span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Gestión de Títulos -->
+            <a routerLink="/admin/book-titles" class="module-item reveal-2">
+                <div class="module-icon books">
+                    <i class="bi bi-book-half"></i>
+                </div>
+                <div class="module-details">
+                    <h3>Títulos de Libros</h3>
+                    <p>Catálogo centralizado, gestión de autores y nuevas adquisiciones.</p>
+                    <div class="module-meta">
+                        <span class="action">Entrar <i class="bi bi-chevron-right"></i></span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Préstamos -->
+            <a routerLink="/admin/loans" class="module-item reveal-3">
+                <div class="module-icon loans">
+                    <i class="bi bi-arrow-down-up"></i>
+                </div>
+                <div class="module-details">
+                    <h3>Préstamos</h3>
+                    <p>Seguimiento de entregas, devoluciones y multas por retraso.</p>
+                    <div class="module-meta">
+                        <span class="action">Entrar <i class="bi bi-chevron-right"></i></span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Reservas -->
+            <a routerLink="/admin/reservatio" class="module-item reveal-4">
+                <div class="module-icon reservations">
+                    <i class="bi bi-bookmark-check"></i>
+                </div>
+                <div class="module-details">
+                    <h3>Reservaciones</h3>
+                    <p>Gestión de disponibilidad anticipada y colas de espera.</p>
+                    <div class="module-meta">
+                        <span class="action">Entrar <i class="bi bi-chevron-right"></i></span>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <div class="dashboard-footer">
+        <div class="activity-mini-card glass-panel">
+            <h3><i class="bi bi-lightning-charge"></i> Actividad Reciente del Sistema</h3>
+            <div class="mini-logs">
+                <div class="log-item">
+                    <span class="time">10 min ago</span>
+                    <span class="log-text">Sincronización de catálogo completada.</span>
+                </div>
+                <div class="log-item">
+                    <span class="time">25 min ago</span>
+                    <span class="log-text">Nuevo backup de base de datos generado.</span>
                 </div>
             </div>
         </div>
-
-        <aside class="content-side">
-            <div class="activity-card glass-panel">
-                <h3>Actividad Reciente</h3>
-                <div class="activity-list">
-                    <div class="activity-item">
-                        <div class="dot green"></div>
-                        <div class="text">Nuevo préstamo: "El Quijote"</div>
-                        <div class="time">Hace 5 min</div>
-                    </div>
-                    <div class="activity-item">
-                        <div class="dot blue"></div>
-                        <div class="text">Usuario registrado: Carlos M.</div>
-                        <div class="time">Hace 12 min</div>
-                    </div>
-                    <div class="activity-item">
-                        <div class="dot yellow"></div>
-                        <div class="text">Libro devuelto: "Rayuela"</div>
-                        <div class="time">Hace 45 min</div>
-                    </div>
-                </div>
-            </div>
-        </aside>
-    </section>
+    </div>
 </div>
