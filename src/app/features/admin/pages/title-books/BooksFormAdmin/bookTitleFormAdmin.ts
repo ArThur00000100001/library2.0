@@ -48,16 +48,16 @@ export class BookTitleFormComponent {
         isbn: new FormControl(null, [Validators.required, Validators.maxLength(255)]),
     });
 
-    // ngOnInit() {
-    //   if (!(this.mode() == 'edit' && this.user() != null)) return;
+    ngOnInit() {
+        if (!(this.mode() == 'edit' && this.bookTitle() != null)) return;
 
-    // this.formData.patchValue({
-    //   title: this.user()?.fullName,
-    //   author: this.user()?.firstLastName,
-    //   publicationYear: this.user()?.secondLastName,
-    //   isbn: this.user()?.email,
-    // });
-    // }
+        this.formData.patchValue({
+            title: this.bookTitle()?.title,
+            author: this.bookTitle()?.author,
+            publicationYear: this.bookTitle()?.publicationYear,
+            isbn: this.bookTitle()?.isbn,
+        });
+    }
 
     async submitData() {
         this.formData.markAllAsTouched();
