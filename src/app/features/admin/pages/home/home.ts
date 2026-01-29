@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { ApiListService } from '../../../services/contentList/api-list.service';
+import { LoanState } from '../../models/types';
 
 @Component({
     selector: 'app-home',
@@ -7,4 +9,26 @@ import { RouterLink } from '@angular/router';
     styleUrl: './home.scss',
     imports: [RouterLink],
 })
-export class HomeComponent {}
+export class HomeComponent {
+    constructor() {
+        this.apiListService.loadUserNeeded();
+        this.apiListService.loadBookTitlesList();
+        this.apiListService.loadLoanList();
+    }
+
+    readonly apiListService = inject(ApiListService);
+    readonly loanState = LoanState;
+
+    readonly userList = this.apiListService.usersList;
+    readonly bookTitlesList = this.apiListService.bookTitleList;
+    readonly loanList = this.apiListService.loansList;
+
+    readonly totalLoans = computed(() => {
+        const list = this.loanList();
+        let total = 0;
+        list.forEach((x) => {
+            x.state == this.loanState.LOANED ? total++ : null;
+        });
+        return total;
+    });
+}

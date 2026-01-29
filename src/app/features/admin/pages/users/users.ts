@@ -3,7 +3,7 @@ import { apiUserService } from './apiUser.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UsersFormComponent } from './usersFormAdmin/userFormAdmin';
 import { IUser } from '../../models/types';
-import { ApiContentListService } from '../../../services/contentList/api-content-list.service';
+import { ApiListService } from '../../../services/contentList/api-list.service';
 
 @Component({
     selector: 'app-users',
@@ -12,26 +12,15 @@ import { ApiContentListService } from '../../../services/contentList/api-content
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UsersComponent {
+    constructor() {
+        this.apiListService.loadUserNeeded();
+        console.log('comprobar', this.apiListService.usersList());
+    }
+
     readonly apiUserService = inject(apiUserService);
     readonly modalService = inject(NgbModal);
-    readonly apiContentListService = inject(ApiContentListService);
-
-    readonly usersList = signal<IUser[]>([]);
-    readonly newsUser = computed(() => {
-        const users = this.usersList();
-        return '0';
-    });
-
-    constructor() {
-        this.getList();
-    }
-
-    //Obtiene la lista de usuarios
-    async getList() {
-        const response = await this.apiUserService.list();
-        if (response.length == 0) return;
-        this.usersList.set(response);
-    }
+    readonly apiListService = inject(ApiListService);
+    readonly usersList = this.apiListService.usersList;
 
     //abrir modal para crear, importar o editar usuario
     async formUser(mode: 'create' | 'edit' | 'import', data: IUser | null = null) {

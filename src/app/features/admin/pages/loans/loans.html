@@ -1,0 +1,175 @@
+<div class="loans-page">
+    <!-- Page Header -->
+    <header class="page-header">
+        <div class="header-info">
+            <h1>Gestión de Préstamos</h1>
+            <p>Control y seguimiento de préstamos de libros a usuarios.</p>
+        </div>
+        <div class="header-actions">
+            <button class="btn btn-secondary" id="exportLoansBtn">
+                <i class="bi bi-download me-2"></i>
+                Exportar
+            </button>
+            <button class="btn btn-primary" id="addLoanBtn" (click)="formLoan('create')">
+                <i class="bi bi-journal-plus me-2"></i>
+                Nuevo Préstamo
+            </button>
+        </div>
+    </header>
+
+    <!-- Stats Summary -->
+    <section class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="bi bi-book fs-4"></i>
+            </div>
+            <div class="stat-details">
+                <span class="stat-value">{{loansList().length}}</span>
+                <span class="stat-label">Préstamos realizados</span>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon" style="color: #10b981; background-color: rgba(16, 185, 129, 0.1);">
+                <i class="bi bi-clock-history fs-4"></i>
+            </div>
+            <div class="stat-details">
+                <span class="stat-value">{{totalLoans()}}</span>
+                <span class="stat-label">Pendientes</span>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon" style="color: #ef4444; background-color: rgba(239, 68, 68, 0.1);">
+                <i class="bi bi-exclamation-triangle fs-4"></i>
+            </div>
+            <div class="stat-details">
+                <span class="stat-value">0</span>
+                <span class="stat-label">Atrasados</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Table Controls -->
+    <div class="table-controls">
+        <div class="search-box">
+            <i class="bi bi-search"></i>
+            <input type="text" placeholder="Buscar por usuario, libro o código..." id="loanSearch">
+        </div>
+        <div class="filter-options">
+            <select id="statusFilter">
+                <option value="">Todos los Estados</option>
+                <option value="active">Activos</option>
+                <option value="returned">Devueltos</option>
+                <option value="overdue">Atrasados</option>
+            </select>
+            <select id="dateFilter">
+                <option value="">Cualquier Fecha</option>
+                <option value="today">Hoy</option>
+                <option value="week">Esta Semana</option>
+                <option value="month">Este Mes</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Loans Table -->
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Usuario</th>
+                    <th>Libro</th>
+                    <th>Fecha Préstamo</th>
+                    <th>Fecha Devolución</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (loan of loansList(); track $index) {
+                <tr>
+                    <td>
+                        <div class="loan-subject">
+                            <div class="icon-wrapper">
+                                <i class="bi bi-person"></i>
+                            </div>
+                            <div class="subject-meta">
+                                <span class="title">{{loan.user?.fullName}}</span>
+                                <span class="subtitle">ID: {{loan.userId}}</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="loan-subject">
+                            <div class="icon-wrapper"
+                                style="background-color: var(--lib-accent); color: var(--lib-primary);">
+                                <i class="bi bi-book-half"></i>
+                            </div>
+                            <div class="subject-meta">
+                                <span class="title">{{loan.book?.bookTitle?.title}}</span>
+                                <span class="subtitle">ISBN: {{loan.book?.bookTitle?.isbn}}</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <span class="text-dark">{{loan.loanDate}}</span>
+                    </td>
+                    <td>
+                        <span class="text-dark">{{loan.dueDate}}</span>
+                    </td>
+                    <td>
+
+                        <span class="status-badge" [class.active]="loan.state === loanState.RETURNED"
+                            [class.overdue]="loan.state === loanState.LOANED"
+                            [class.returned]="loan.state === loanState.RETURNED">
+                            @switch (loan.state) {
+                            @case (loanState.RETURNED) { Devuelto }
+                            @case (loanState.LOANED) { Falta entregar }
+                            @case (loanState.RESERVATED) { Reservado }
+                            @default { fdf }
+                            }
+                        </span>
+                    </td>
+                    <td>
+                        <div class="action-buttons">
+                            @if (loan.state !== loanState.RETURNED) {
+                            <button class="btn-icon return" title="Marcar como Devuelto" (click)="returnBook(loan)">
+                                <i class="bi bi-check2-circle"></i>
+                            </button>
+                            }
+                            <button class="btn-icon edit" title="Editar" (click)="formLoan('edit', loan)">
+                                <i class="bi bi-pencil-square"></i>
+                            </button>
+                            <button class="btn-icon delete" title="Eliminar" (click)="eliminate(loan.id)">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                } @empty {
+                <tr>
+                    <td colspan="6" class="text-center py-5">
+                        <div class="text-muted">
+                            <i class="bi bi-inbox fs-1 d-block mb-3"></i>
+                            No se encontraron préstamos registrados.
+                        </div>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+
+        <!-- Pagination -->
+        <div class="pagination">
+            <span>Mostrando {{loansList().length}} préstamos</span>
+            <div class="page-nav">
+                <button class="btn-icon" disabled>
+                    <i class="bi bi-chevron-left"></i>
+                </button>
+                <button class="btn-icon"
+                    style="background-color: var(--lib-primary); color: white; border-color: var(--lib-primary);">1</button>
+                <button class="btn-icon">
+                    <i class="bi bi-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

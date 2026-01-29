@@ -17,7 +17,7 @@
             </div>
             <div class="stat-info">
                 <h3>Títulos Totales</h3>
-                <p class="value">1,284</p>
+                <p class="value">{{bookTitlesList().length}}</p>
                 <p class="trend positive">+12 esta semana</p>
             </div>
         </div>
@@ -27,8 +27,8 @@
                 <i class="bi bi-people"></i>
             </div>
             <div class="stat-info">
-                <h3>Usuarios Activos</h3>
-                <p class="value">856</p>
+                <h3>Usuarios Totales</h3>
+                <p class="value">{{userList().length}}</p>
                 <p class="trend positive">+5 registrados hoy</p>
             </div>
         </div>
@@ -39,8 +39,8 @@
             </div>
             <div class="stat-info">
                 <h3>Préstamos Activos</h3>
-                <p class="value">42</p>
-                <p class="trend">15 por devolver</p>
+                <p class="value">{{totalLoans()}}</p>
+                <p class="trend"></p>
             </div>
         </div>
     </section>

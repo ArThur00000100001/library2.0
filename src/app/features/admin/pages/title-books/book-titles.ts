@@ -13,6 +13,7 @@ import { BooksTitlesApiService } from './apiBookTitles.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BookTitleFormComponent } from './BooksFormAdmin/bookTitleFormAdmin';
 import { CopyBookComponent } from './books/copy-book';
+import { ApiListService } from '../../../services/contentList/api-list.service';
 
 @Component({
     selector: 'app-book-titles',
@@ -26,7 +27,9 @@ export class BookTitleComponent {
     // Signal for books list
     readonly apiBookTitleService = inject(BooksTitlesApiService);
     readonly modalService = inject(NgbModal);
-    readonly bookTitleList = signal<IBookTitle[]>([]);
+    readonly apiListService = inject(ApiListService);
+
+    readonly bookTitleList = this.apiListService.bookTitleList;
 
     readonly totalCopys = computed(() => {
         let total = 0;
@@ -36,15 +39,11 @@ export class BookTitleComponent {
         });
         return total;
     });
+
     constructor() {
-        this.getList();
+        this.apiListService.loadBookTitlesList();
     }
 
-    async getList() {
-        const response = await this.apiBookTitleService.list();
-        if (response.length == 0) return;
-        this.bookTitleList.set(response);
-    }
     async openBookForm(mode: 'create' | 'edit' | 'import', data: IBookTitle | null = null) {
         try {
             const ref = this.modalService.open(BookTitleFormComponent, {
