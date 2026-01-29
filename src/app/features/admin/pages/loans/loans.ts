@@ -1,6 +1,10 @@
 import { Component, ChangeDetectionStrategy, signal, inject, computed } from '@angular/core';
 import { ApiListService } from '../../../services/contentList/api-list.service';
-import { LoanState } from '../../models/types';
+import { ILoan, LoanState } from '../../models/types';
+import { ApiLoanService } from './apiLoan.service';
+import { CopyTitlesApiService } from '../title-books/books/apiCopyTitles.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { LoanFormComponent } from './LoanFormAdmin/LoanFormAdmin';
 
 @Component({
     selector: 'app-loans',
@@ -13,7 +17,11 @@ export class LoansComponent {
         this.apiListservice.loadLoanList();
     }
 
+    readonly apiLoanService = inject(ApiLoanService);
+    readonly copyBookApiService = inject(CopyTitlesApiService);
     readonly apiListservice = inject(ApiListService);
+    readonly modalService = inject(NgbModal);
+
     readonly loanState = LoanState;
 
     readonly loansList = this.apiListservice.loansList;
@@ -28,13 +36,36 @@ export class LoansComponent {
     });
 
     // Método para abrir el formulario de préstamos
-    formLoan(mode: 'create' | 'edit', data: any = null) {
-        console.log(`Abrir formulario en modo ${mode}`, data);
+    async formLoan(mode: 'create' | 'edit', data: ILoan | null = null) {
+        const ref = this.modalService.open(LoanFormComponent, {
+            size: 'lg',
+            backdrop: 'static',
+        });
+
+        const component: LoanFormComponent = ref.componentInstance;
+        component.mode.set(mode);
+        if (data) component.loan.set(data);
+
+        const result = await ref.result;
+        if (result) {
+            this.apiListservice.loadLoanList();
+        }
     }
 
-    // Método para procesar la devolución de un libro
-    returnBook(loan: any) {
-        console.log('Procesar devolución:', loan);
+    // Método para procesar la devolucion de un libro
+    async returnBook(loan: ILoan) {
+        const response = await this.apiLoanService.edit(loan.id, {
+            returnDate: new Date().toISOString().split('T')[0],
+            state: this.loanState.RETURNED,
+        });
+        const response2 = await this.copyBookApiService.edit(loan.book?.id!, {
+            isAvailable: true,
+        });
+
+        if (response.status == 'failure') return;
+        this.loansList.update((loan) =>
+            loan.map((x) => (x.id === response.data.id ? response.data : x)),
+        );
     }
 
     // Método para eliminar un registro de préstamo

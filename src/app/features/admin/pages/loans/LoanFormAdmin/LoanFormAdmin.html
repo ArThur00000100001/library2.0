@@ -1,0 +1,87 @@
+<div class="modal-container">
+  <!-- Header -->
+  <div class="modal-header border-0 pb-0">
+    <h5 class="modal-title h4 fw-bold text-white">
+      <span class="accent-line"></span>
+      {{ mode() === 'create' ? 'Registrar Préstamo' : 'Editar Préstamo' }}
+    </h5>
+    <button type="button" class="btn-close btn-close-white" aria-label="Close"
+      (click)="modalActivate?.close()"></button>
+  </div>
+
+  <!-- Body -->
+  <div class="modal-body py-4">
+    <p class="text-secondary small mb-4">
+      Complete la información para {{ mode() === 'create' ? 'registrar un nuevo' : 'editar el' }} préstamo.
+    </p>
+
+    <form class="row g-3" [formGroup]="formData" (ngSubmit)="submitData()">
+      <!-- Book Selection -->
+      <div class="col-12">
+        <label class="form-label text-light small fw-semibold">Título del Libro</label>
+        <select class="form-select-custom" formControlName="bookId">
+          <option [ngValue]="null" disabled>Seleccione un libro</option>
+          @for (book of booksList(); track book.id) {
+          @if (book.isAvailable) {
+          <option [value]="book.id">
+            {{ book.bookTitle?.title }} (Copia #{{ book.copyNumber }})
+          </option>
+          }
+
+          }
+        </select>
+
+        @if (formData.get('bookId')?.touched && formData.get('bookId')?.errors?.['required']) {
+        <label class="text-danger small d-block mt-1">
+          Debe seleccionar un libro
+        </label>
+        }
+      </div>
+
+      <!-- User Selection -->
+      <div class="col-12">
+        <label class="form-label text-light small fw-semibold">Usuario a Elegir</label>
+        <select class="form-select-custom" formControlName="userId">
+          <option [ngValue]="null" disabled>Seleccione un usuario</option>
+          @for (user of usersList(); track user.id) {
+          @if(user.role == 'student'){
+          <option [value]="user.id">
+            {{ user.fullName }} ({{ user.dni }})
+          </option>
+          }
+
+          }
+        </select>
+
+        @if (formData.get('userId')?.touched && formData.get('userId')?.errors?.['required']) {
+        <label class="text-danger small d-block mt-1">
+          Debe seleccionar un usuario
+        </label>
+        }
+      </div>
+
+      <!-- Due Date -->
+      <div class="col-12">
+        <label class="form-label text-light small fw-semibold">Fecha de Vencimiento</label>
+        <input type="date" class="form-control-custom" formControlName="dueDate" />
+
+        @if (formData.get('dueDate')?.touched && formData.get('dueDate')?.errors?.['required']) {
+        <label class="text-danger small d-block mt-1">
+          La fecha de vencimiento es obligatoria
+        </label>
+        }
+      </div>
+
+      <!-- Footer -->
+      <div class="modal-footer border-0 pt-4 px-0">
+        <button type="button" class="btn-cancel" (click)="modalActivate?.close()">
+          Cancelar
+        </button>
+        <button type="submit" class="btn-submit">
+          <span>{{ mode() === 'create' ? 'Guardar Préstamo' : 'Actualizar Préstamo' }}</span>
+          <i class="bi bi-check-lg ms-2"></i>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

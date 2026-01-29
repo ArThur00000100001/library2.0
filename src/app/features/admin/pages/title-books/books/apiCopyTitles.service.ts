@@ -29,10 +29,7 @@ export class CopyTitlesApiService {
     }
 
     async edit(id: number, params: Partial<IBook>) {
-        const response = await this.apiService.patchApiAuth<IBook>(
-            `${API}/book-titles/${id}`,
-            params,
-        );
+        const response = await this.apiService.patchApiAuth<IBook>(`${API}/books/${id}`, params);
         if (response.status === 'success') this.toastr.success(response.message, 'Éxito');
         return response;
     }
