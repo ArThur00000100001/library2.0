@@ -25,7 +25,7 @@ export class ApiListService {
     async loadUserNeeded() {
         if (this.usersList().length > 0) return;
         const data = await this.apiUserService.list();
-        this.usersList.set(data);
+        this.usersList.set(data.map((data) => ({ ...data, isOnline: false })));
     }
 
     //metodo para cargar lista de libros si es que se necesita

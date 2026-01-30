@@ -47,9 +47,8 @@ export class LoansComponent {
         if (data) component.loan.set(data);
 
         const result = await ref.result;
-        if (result) {
-            this.apiListservice.loadLoanList();
-        }
+        if (!result) return;
+        mode == 'create' ? this.loansList.update((loans) => [result, ...loans]) : null;
     }
 
     // Método para procesar la devolucion de un libro

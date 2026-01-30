@@ -8,6 +8,7 @@ export type IUser = {
     password?: string | null | undefined;
     joinDate: string | null;
     role: 'admin' | 'student' | null;
+    isOnline: boolean;
 };
 
 export type IBookTitle = {

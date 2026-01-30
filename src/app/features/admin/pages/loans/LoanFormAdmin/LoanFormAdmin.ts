@@ -86,18 +86,26 @@ export class LoanFormComponent implements OnInit {
     async create() {
         const data = this.formData.value;
         const body: Partial<ILoan> = {
-            bookId: data.bookId!,
-            userId: data.userId!,
+            bookId: +data.bookId!,
+            userId: +data.userId!,
             dueDate: data.dueDate!,
             loanDate: new Date().toISOString().split('T')[0],
             state: LoanState.LOANED,
         };
-
         const response = await this.apiLoanService.create(body);
         if (response.status === 'success') {
-            await this.apiBookService.edit(data.bookId!, { isAvailable: false });
+            const response2 = await this.apiBookService.edit(data.bookId!, { isAvailable: false });
+            if (response2.status == 'failure') return;
+            this.apiListService.copyBookList.update(
+                (book) => book.map((x) => (x.id == +data.bookId! ? response2 : x)) as IBook[],
+            );
+            // const copy = this.booksList().find((x) => x.id == data.bookId);
+            // console.log(copy);
+
             this.modalActivate?.close(response.data);
         }
+
+        this.modalActivate?.close(response);
     }
 
     async edit() {

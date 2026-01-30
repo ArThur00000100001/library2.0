@@ -5,6 +5,7 @@ import { UsersFormComponent } from './usersFormAdmin/userFormAdmin';
 import { IUser } from '../../models/types';
 import { ApiListService } from '../../../services/contentList/api-list.service';
 import { DatePipe } from '@angular/common';
+import { ChatService } from '../../../services/chat/chat.service';
 
 @Component({
     selector: 'app-users',
@@ -15,14 +16,16 @@ import { DatePipe } from '@angular/common';
 export class UsersComponent {
     constructor() {
         this.apiListService.loadUserNeeded();
-        console.log('comprobar', this.apiListService.usersList());
         //console.log(`${new Date().getFullYear()}/${new Date().getMonth()}/${new Date().getDate()}`);
     }
 
     readonly apiUserService = inject(apiUserService);
     readonly modalService = inject(NgbModal);
     readonly apiListService = inject(ApiListService);
+    readonly chatService = inject(ChatService);
+
     readonly usersList = this.apiListService.usersList;
+    readonly userOnlineList = this.chatService.usersOnlineList;
 
     //abrir modal para crear, importar o editar usuario
     async formUser(mode: 'create' | 'edit' | 'import', data: IUser | null = null) {
