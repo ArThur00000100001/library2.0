@@ -11,7 +11,6 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UsersFormComponent } from './usersFormAdmin/userFormAdmin';
 import { IUser } from '../../models/types';
 import { ApiListService } from '../../../services/contentList/api-list.service';
-import { DatePipe } from '@angular/common';
 import { ChatService } from '../../../services/chat/chat.service';
 
 @Component({
