@@ -3,6 +3,7 @@ import { RouterOutlet, RouterLinkActive } from '@angular/router';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../core/guard/auth.service';
 import { ChatService } from '../services/chat/chat.service';
+import { ChatComponent } from '../chat/chat';
 
 @Component({
     selector: 'app-layout-home',
@@ -10,7 +11,7 @@ import { ChatService } from '../services/chat/chat.service';
     styleUrl: './layout-home.scss',
     standalone: true,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [RouterOutlet, RouterLink, RouterLinkActive],
+    imports: [RouterOutlet, RouterLink, RouterLinkActive, ChatComponent],
 })
 export class LayoutHomeComponent {
     readonly chatServie = inject(ChatService);

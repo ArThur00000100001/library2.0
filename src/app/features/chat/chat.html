@@ -1,0 +1,108 @@
+<div class="chat-container" [class.open]="isOpen()">
+    <!-- Floating Button -->
+    <button class="chat-toggle-btn" (click)="toggleChat()" [attr.aria-label]="isOpen() ? 'Cerrar chat' : 'Abrir chat'">
+        <i class="bi" [class.bi-chat-dots-fill]="!isOpen()" [class.bi-x-lg]="isOpen()"></i>
+    </button>
+
+    <!-- Chat Window -->
+    @if (isOpen()) {
+    <div class="chat-window shadow-lg">
+        <!-- Header -->
+        <div class="chat-header">
+            @if (selectedUser()) {
+            <button class="back-btn" (click)="deselectUser()">
+                <i class="bi bi-chevron-left"></i>
+            </button>
+            <div class="selected-user-info">
+                <div class="avatar-sm">
+                    <span class="initials">{{ getInitials(selectedUser()!.fullName) }}</span>
+                    <span class="status-indicator" [class.online]="selectedUser()!.isOnline"></span>
+                </div>
+                <div class="user-meta">
+                    <span class="name">{{ selectedUser()!.fullName }}</span>
+                    <span class="status-text">{{ selectedUser()!.isOnline ? 'En línea' : 'Desconectado' }}</span>
+                </div>
+            </div>
+            } @else {
+            <span class="header-title">Contactos</span>
+            }
+            <button class="close-btn" (click)="toggleChat()">
+                <i class="bi bi-dash-lg"></i>
+            </button>
+        </div>
+
+        <!-- Content -->
+        <div class="chat-content">
+            @if (!selectedUser()) {
+            <!-- User List -->
+            <div class="user-list">
+                @for (user of users(); track user.id) {
+                <button class="user-item" (click)="selectUser(user)">
+                    <div class="avatar">
+                        <span class="initials">{{ getInitials(user.fullName) }}</span>
+                        <span class="status-indicator" [class.online]="user.isOnline"></span>
+                    </div>
+                    <div class="user-item-info">
+                        <span class="name">{{ user.fullName }}</span>
+                        <span class="role">{{ user.role }}</span>
+                    </div>
+                    <i class="bi bi-chevron-right ms-auto opacity-50"></i>
+                </button>
+                } @empty {
+                <div class="empty-state">
+                    <i class="bi bi-people mb-2"></i>
+                    <p>No hay otros usuarios</p>
+                </div>
+                }
+            </div>
+            } @else {
+            <div class="messages-container" #scrollContainer>
+                @for (msg of messagesForSelectedUser(); track (msg.id || msg.createdAt.getTime())) {
+                <div class="message-wrapper" [class.sent]="msg.senderId === currentUser()!.id">
+                    <div class="message-bubble">
+                        <p class="content">{{ msg.content }}</p>
+                        <div class="message-meta">
+                            <span class="time">{{ msg.createdAt | date:'HH:mm' }}</span>
+                            @if (msg.senderId === currentUser()!.id) {
+                            <i class="bi" [class.bi-check2]="!msg.isRead" [class.bi-check2-all]="msg.isRead"
+                                [class.text-primary]="msg.isRead"></i>
+                            }
+                        </div>
+                    </div>
+                </div>
+                } @empty {
+                <div class="empty-state">
+                    <i class="bi bi-chat-heart mb-2"></i>
+                    <p>Di hola a {{ selectedUser()!.fullName }}</p>
+                </div>
+                }
+                @if (typingStatus()) {
+                <div class="typing-indicator-wrapper">
+                    <div class="typing-dots">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <span class="typing-text">{{ selectedUser()!.fullName }} está escribiendo...</span>
+                </div>
+                }
+            </div>
+            }
+        </div>
+
+        <!-- Footer/Input -->
+        @if (selectedUser()) {
+        <div class="chat-footer">
+            <div class="input-wrapper">
+                <input type="text" placeholder="Escribe un mensaje..." [(ngModel)]="newMessage"
+                    [ngModelOptions]="{standalone: true}" (input)="onType()" (keyup.enter)="sendMessage()"
+                    class="message-input">
+                <button class="send-btn" (click)="sendMessage()" [disabled]="!newMessage().trim()">
+                    <i class="bi bi-send-fill"></i>
+                </button>
+            </div>
+        </div>
+        }
+    </div>
+    }
+</div>
