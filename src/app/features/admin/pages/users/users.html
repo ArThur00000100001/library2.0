@@ -84,8 +84,7 @@
             </thead>
             <tbody>
                 <!-- Mock Data Row 1 -->
-                @for (item of usersList(); track $index) {
-
+                @for (item of userListFilter(); track $index) {
                 <tr>
                     <td><code style="color: #94a3b8;">{{item.dni}}</code></td>
                     <td>
@@ -102,7 +101,8 @@
                     </td>
 
                     <td>
-                        <span class="status-indicator offline text-dark">Inactivo</span>
+                        <span class="status-indicator text-dark" [class.active]="item.isOnline"
+                            [class.offline]="!item.isOnline">{{item.isOnline}}</span>
                     </td>
                     <td>
                         <span class="text-dark">{{item.joinDate}}</span>

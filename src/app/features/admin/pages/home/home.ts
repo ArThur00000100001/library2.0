@@ -11,7 +11,6 @@ import { LoanState } from '../../models/types';
 })
 export class HomeComponent {
     constructor() {
-        this.apiListService.loadUserNeeded();
         this.apiListService.loadBookTitlesList();
         this.apiListService.loadLoanList();
     }

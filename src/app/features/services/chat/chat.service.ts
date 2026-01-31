@@ -33,55 +33,109 @@ export class ChatService {
 
     readonly apiListService = inject(ApiListService);
     readonly usersList = this.apiListService.usersList;
+    readonly userOnlineId = signal<number>(0);
 
     online = false;
     ejecutado = false;
 
-    readonly comprobar = effect(() => {
-        const list = this.usersList();
-        const userId = this.authService.user().id;
+    readonly verifyOnlineUser = effect(
+        () => {
+            const usersOnline = this.usersOnlineList();
+            const currentUsers = this.apiListService.usersList();
+            const onlineIds = new Set(usersOnline.map((u) => u.userId));
 
-        if (!this.online) return;
+            const needsChange = currentUsers.some(
+                (u) => u.isOnline !== onlineIds.has(u.id),
+            );
 
-        if (this.ejecutado) return list;
+            if (needsChange) {
+                this.apiListService.usersList.update((list) =>
+                    list.map((u) => ({
+                        ...u,
+                        isOnline: onlineIds.has(u.id),
+                    })),
+                );
+            }
+        },
+        { allowSignalWrites: true },
+    );
 
-        this.apiListService.usersList.set(
-            list.map((u) => (u.id == userId ? { ...u, isOnline: true } : u)),
-        );
+    // readonly comprobar = effect(() => {
+    //     const list = this.usersList();
+    //     const userId = this.authService.user().id;
 
-        this.ejecutado = true;
-        console.log(this.apiListService.usersList());
+    //     if (!this.online) return;
 
-        return list;
-    });
+    //     if (this.ejecutado) return this.apiListService.usersList();
+    //     this.apiListService.usersList.set(
+    //         list.map((u) => (u.id == userId ? { ...u, isOnline: true } : u)),
+    //     );
+
+    //     this.ejecutado = true;
+    //     console.log('desde el chat', this.apiListService.usersList());
+
+    //     return this.apiListService.usersList();
+    // });
 
     constructor() {
+        effect(() => {
+            const user = this.authService.user();
+            if (user && user.id) {
+                this.connect(user.id);
+            } else {
+                this.disconnect();
+            }
+        });
+    }
+
+    private connect(userId: number) {
+        if (this.socket) {
+            console.log('🔌 Ya existe una conexión, reconectando...');
+            this.disconnect();
+        }
+
         this.ngZone.runOutsideAngular(() => {
             this.apiListService.loadUserNeeded();
-            const user = this.authService.user();
-            this.socket = io(APIWS, { query: { userId: user.id } });
+            this.socket = io(APIWS, { query: { userId } });
 
             //hace un llamado a la lista de uusarios conectados
             this.socket.emit('getOnlineUsers');
+
             //Obtiene la lista de usuario mediante el parametro
-            this.socket.on('onlineUsers', (user) => {
-                this.usersOnlineList.set(user);
+            this.socket.on('onlineUsers', (users) => {
+                this.ngZone.run(() => {
+                    this.usersOnlineList.set(users);
+                });
             });
 
             //usuario conectado
             this.socket.on('userOnline', (user) => {
                 console.log(`✅ Usuario ${user.userId} conectado`);
-                this.usersOnlineList.update((list) => [...list, user]);
-                this.online = true;
+                this.ngZone.run(() => {
+                    this.usersOnlineList.update((list) => [...list, user]);
+                    this.userOnlineId.set(user.userId);
+                    this.online = true;
+                });
             });
 
             //usuario desconectado
             this.socket.on('userOffline', (user) => {
                 console.log(`❌ Usuario ${user.userId} desconectado`);
-                this.usersOnlineList.set(
-                    this.usersOnlineList().filter((x) => x.userId != user.userId),
-                );
+                this.ngZone.run(() => {
+                    this.usersOnlineList.update((list) =>
+                        list.filter((x) => x.userId != user.userId),
+                    );
+                });
             });
         });
+    }
+
+    private disconnect() {
+        if (this.socket) {
+            this.socket.disconnect();
+            this.socket = null;
+            this.online = false;
+            console.log('🔌 Socket desconectado');
+        }
     }
 }

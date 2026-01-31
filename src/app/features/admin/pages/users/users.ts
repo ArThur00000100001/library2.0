@@ -1,4 +1,11 @@
-import { Component, ChangeDetectionStrategy, signal, inject, computed } from '@angular/core';
+import {
+    Component,
+    ChangeDetectionStrategy,
+    signal,
+    inject,
+    computed,
+    effect,
+} from '@angular/core';
 import { apiUserService } from './apiUser.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UsersFormComponent } from './usersFormAdmin/userFormAdmin';
@@ -15,7 +22,7 @@ import { ChatService } from '../../../services/chat/chat.service';
 })
 export class UsersComponent {
     constructor() {
-        this.apiListService.loadUserNeeded();
+        //this.apiListService.loadUserNeeded();
         //console.log(`${new Date().getFullYear()}/${new Date().getMonth()}/${new Date().getDate()}`);
     }
 
@@ -26,6 +33,11 @@ export class UsersComponent {
 
     readonly usersList = this.apiListService.usersList;
     readonly userOnlineList = this.chatService.usersOnlineList;
+
+    readonly userListFilter = computed(() => {
+        const list = this.usersList();
+        return list.sort((a, b) => Number(b.isOnline) - Number(a.isOnline));
+    });
 
     //abrir modal para crear, importar o editar usuario
     async formUser(mode: 'create' | 'edit' | 'import', data: IUser | null = null) {

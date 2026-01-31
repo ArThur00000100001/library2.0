@@ -1,0 +1,8 @@
+import { Component } from '@angular/core';
+
+@Component({
+    selector: 'app-chat',
+    templateUrl: './chat.html',
+    styleUrl: './chat.scss',
+})
+export class ChatComponent {}

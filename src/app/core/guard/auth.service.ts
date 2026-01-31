@@ -19,8 +19,10 @@ export class AuthService {
   user = signal<IUser>(null!);
   role = computed(() => this.user().role);
 
-  logout(){
-    localStorage.removeItem('token-raw')
-    this.router.navigate(['/login'])
+  logout() {
+    localStorage.removeItem('token-raw');
+    this.user.set(null!);
+    this.token.set(null!);
+    this.router.navigate(['/login']);
   }
 }
