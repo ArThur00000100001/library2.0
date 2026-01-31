@@ -64,10 +64,14 @@ export class ChatComponent {
             const msgs = this.messagesForSelectedUser();
             if (msgs.length > 0) {
                 this.scrollToBottom();
-                
+
                 // Mark unread messages as read
                 const lastMsg = msgs[msgs.length - 1];
-                if (lastMsg.receiverId === this.currentUser()?.id && !lastMsg.isRead && lastMsg.id) {
+                if (
+                    lastMsg.receiverId === this.currentUser()?.id &&
+                    !lastMsg.isRead &&
+                    lastMsg.id
+                ) {
                     this.chatService.markAsRead(lastMsg.id);
                 }
             }
@@ -139,4 +143,3 @@ export class ChatComponent {
             .substring(0, 2);
     }
 }
-

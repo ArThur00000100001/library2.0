@@ -43,9 +43,7 @@ export class ChatService {
             const currentUsers = this.apiListService.usersList();
             const onlineIds = new Set(usersOnline.map((u) => u.userId));
 
-            const needsChange = currentUsers.some(
-                (u) => u.isOnline !== onlineIds.has(u.id),
-            );
+            const needsChange = currentUsers.some((u) => u.isOnline !== onlineIds.has(u.id));
 
             if (needsChange) {
                 this.apiListService.usersList.update((list) =>
@@ -91,7 +89,7 @@ export class ChatService {
             this.socket.on('userOnline', (user: IUserOnline) => {
                 this.ngZone.run(() => {
                     this.usersOnlineList.update((list) => {
-                        if (list.some(u => u.userId === user.userId)) return list;
+                        if (list.some((u) => u.userId === user.userId)) return list;
                         return [...list, user];
                     });
                     this.online = true;
@@ -110,36 +108,43 @@ export class ChatService {
                 this.ngZone.run(() => {
                     const mappedMessage: IMessage = {
                         ...message,
-                        createdAt: new Date(message.createdAt)
+                        createdAt: new Date(message.createdAt),
                     };
 
                     this.messages.update((msgs) => {
                         // Avoid duplicates by ID or by content/time heuristic
-                        const exists = msgs.some(m => 
-                            (m.id && mappedMessage.id && m.id === mappedMessage.id) || 
-                            (m.content === mappedMessage.content && 
-                             m.senderId === mappedMessage.senderId && 
-                             m.receiverId === mappedMessage.receiverId &&
-                             Math.abs(m.createdAt.getTime() - mappedMessage.createdAt.getTime()) < 5000)
+                        const exists = msgs.some(
+                            (m) =>
+                                (m.id && mappedMessage.id && m.id === mappedMessage.id) ||
+                                (m.content === mappedMessage.content &&
+                                    m.senderId === mappedMessage.senderId &&
+                                    m.receiverId === mappedMessage.receiverId &&
+                                    Math.abs(
+                                        m.createdAt.getTime() - mappedMessage.createdAt.getTime(),
+                                    ) < 5000),
                         );
                         if (exists) {
                             // If it exists but didn't have an ID (optimistic), update it with the server ID
-                            return msgs.map(m => {
-                                if (!m.id && 
-                                    m.content === mappedMessage.content && 
-                                    m.senderId === mappedMessage.senderId && 
-                                    m.receiverId === mappedMessage.receiverId) {
+                            return msgs.map((m) => {
+                                if (
+                                    !m.id &&
+                                    m.content === mappedMessage.content &&
+                                    m.senderId === mappedMessage.senderId &&
+                                    m.receiverId === mappedMessage.receiverId
+                                ) {
                                     return mappedMessage;
                                 }
                                 return m;
                             });
                         }
-                        
+
                         // Add and sort to ensure chronological order (newest at the bottom)
                         const newList = [...msgs, mappedMessage];
-                        return newList.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
+                        return newList.sort(
+                            (a, b) => a.createdAt.getTime() - b.createdAt.getTime(),
+                        );
                     });
-                    
+
                     if (message.receiverId === this.authService.user()?.id && !message.isRead) {
                         this.getUnreadCount(this.authService.user()!.id!);
                     }
@@ -148,17 +153,17 @@ export class ChatService {
 
             this.socket.on('userTyping', (data: ITypingStatus) => {
                 this.ngZone.run(() => {
-                    this.typingUsers.update(prev => ({
+                    this.typingUsers.update((prev) => ({
                         ...prev,
-                        [data.userId]: data.isTyping
+                        [data.userId]: data.isTyping,
                     }));
                 });
             });
 
-            this.socket.on('messageRead', (data: { messageId: number, readAt: string }) => {
+            this.socket.on('messageRead', (data: { messageId: number; readAt: string }) => {
                 this.ngZone.run(() => {
-                    this.messages.update(msgs => 
-                        msgs.map(m => m.id === data.messageId ? { ...m, isRead: true } : m)
+                    this.messages.update((msgs) =>
+                        msgs.map((m) => (m.id === data.messageId ? { ...m, isRead: true } : m)),
                     );
                 });
             });
@@ -174,21 +179,26 @@ export class ChatService {
         if (!currentUser?.id) return;
 
         const response = await this.apiFetchService.getApiAuth<IMessage[]>(
-            `${API}/messages/conversation/${currentUser.id}/${otherUserId}`
+            `${API}/messages/conversation/${currentUser.id}/${otherUserId}`,
         );
 
         if (response.status === 'success') {
-            const history = response.data.map(m => ({
+            const history = response.data.map((m) => ({
                 ...m,
-                createdAt: new Date(m.createdAt)
+                createdAt: new Date(m.createdAt),
             }));
-            
-            this.messages.update(currentMsgs => {
+
+            this.messages.update((currentMsgs) => {
                 const combined = [...currentMsgs];
-                history.forEach(h => {
-                    const existingIdx = combined.findIndex(m => 
-                        (m.id && h.id && m.id === h.id) || 
-                        (!m.id && m.content === h.content && m.senderId === h.senderId && m.receiverId === h.receiverId && Math.abs(m.createdAt.getTime() - h.createdAt.getTime()) < 2000)
+                history.forEach((h) => {
+                    const existingIdx = combined.findIndex(
+                        (m) =>
+                            (m.id && h.id && m.id === h.id) ||
+                            (!m.id &&
+                                m.content === h.content &&
+                                m.senderId === h.senderId &&
+                                m.receiverId === h.receiverId &&
+                                Math.abs(m.createdAt.getTime() - h.createdAt.getTime()) < 5000),
                     );
 
                     if (existingIdx === -1) {
@@ -205,7 +215,7 @@ export class ChatService {
 
     async getUnreadCount(userId: number) {
         const response = await this.apiFetchService.getApiAuth<{ unreadCount: number }>(
-            `${API}/messages/unread/${userId}`
+            `${API}/messages/unread/${userId}`,
         );
         if (response.status === 'success') {
             this.unreadCount.set(response.data.unreadCount);
@@ -231,7 +241,9 @@ export class ChatService {
         });
 
         // Optimistic update with sorting
-        this.messages.update((msgs) => [...msgs, messageData].sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime()));
+        this.messages.update((msgs) =>
+            [...msgs, messageData].sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime()),
+        );
     }
 
     sendTyping(receiverId: number, isTyping: boolean) {
@@ -248,10 +260,10 @@ export class ChatService {
     markAsRead(messageId: number) {
         if (!this.socket) return;
         this.socket.emit('markAsRead', { messageId });
-        
+
         // Also update local state
-        this.messages.update(msgs => 
-            msgs.map(m => m.id === messageId ? { ...m, isRead: true } : m)
+        this.messages.update((msgs) =>
+            msgs.map((m) => (m.id === messageId ? { ...m, isRead: true } : m)),
         );
     }
 
@@ -263,4 +275,3 @@ export class ChatService {
         }
     }
 }
-
