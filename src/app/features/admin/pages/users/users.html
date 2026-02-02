@@ -42,7 +42,7 @@
                 <i class="bi bi-lightning fs-4"></i>
             </div>
             <div class="stat-details">
-                <span class="stat-value"></span>
+                <span class="stat-value">{{newUsers().length}}</span>
                 <span class="stat-label">Nuevos hoy</span>
 
             </div>
@@ -53,15 +53,16 @@
     <div class="table-controls">
         <div class="search-box">
             <i class="bi bi-search"></i>
-            <input type="text" placeholder="Buscar por nombre, email o DNI..." id="userSearch">
+            <input type="text" placeholder="Buscar por nombre, email o DNI..." id="userSearch"
+                (input)="searchTerm.set($any($event.target).value)" />
         </div>
         <div class="filter-options">
-            <select id="roleFilter">
+            <select id="roleFilter" (change)="roleFilter.set($any($event.target).value)">
                 <option value="">Todos los Roles</option>
                 <option value="admin">Administrador</option>
                 <option value="student">Estudiante</option>
             </select>
-            <select id="statusFilter">
+            <select id="statusFilter" (change)="statusFilter.set($any($event.target).value)">
                 <option value="">Cualquier Estado</option>
                 <option value="active">Activo</option>
                 <option value="inactive">Inactivo</option>

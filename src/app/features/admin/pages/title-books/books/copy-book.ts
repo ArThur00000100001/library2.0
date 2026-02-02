@@ -21,6 +21,22 @@ export class CopyBookComponent {
 
     readonly bookTitle = model<IBookTitle | null>(null);
 
+    readonly searchTerm = signal('');
+
+    readonly filteredCopies = computed(() => {
+        const title = this.bookTitle();
+        if (!title || !title.copies) return [];
+
+        const search = this.searchTerm().toLowerCase();
+        if (!search) return title.copies;
+
+        return title.copies.filter(
+            (copy) =>
+                copy.id.toString().includes(search) ||
+                (copy.isAvailable ? 'disponible' : 'no disponible').includes(search),
+        );
+    });
+
     //Obtiene la lista de usuarios con el backent
 
     async openCopyModal() {

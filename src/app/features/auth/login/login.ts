@@ -8,7 +8,7 @@ import {
     Validators,
     ReactiveFormsModule,
 } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { ApiFetchService } from '../../services/apiFetch.service';
 import { API } from '../../environment/environment';
 import { AuthService } from '../../../core/guard/auth.service';
@@ -19,7 +19,7 @@ import { ChatService } from '../../services/chat/chat.service';
     selector: 'app-login',
     templateUrl: './login.html',
     styleUrl: './login.scss',
-    imports: [ReactiveFormsModule, RouterLink],
+    imports: [ReactiveFormsModule],
 })
 export class LoginComponent {
     readonly apiFetchService = inject(ApiFetchService);

@@ -1,0 +1,67 @@
+<div class="reservations-container">
+    <div class="header-section d-flex justify-content-between align-items-end flex-wrap gap-4">
+        <div>
+            <h1>Gestionar Reservaciones</h1>
+            <p>Administra las solicitudes de préstamos de los estudiantes de forma eficiente.</p>
+        </div>
+
+        <div class="stats-card">
+            <div class="icon">
+                <i class="bi bi-clock-history"></i>
+            </div>
+            <div class="info">
+                <span class="label">Pendientes</span>
+                <span class="count">{{ pendingReservations().length }}</span>
+            </div>
+        </div>
+    </div>
+
+    @if (pendingReservations().length > 0) {
+    <div class="reservations-grid">
+        @for (res of pendingReservations(); track res.id) {
+        <div class="reservation-card">
+            <div class="card-header">
+                <div class="book-info">
+                    <div class="book-cover-placeholder">
+                        <i class="bi bi-book"></i>
+                    </div>
+                    <div class="details">
+                        <h3 title="{{ res.book?.bookTitle?.title }}">{{ res.book?.bookTitle?.title }}</h3>
+                        <p>Copia #{{ res.book?.copyNumber }} • ISBN: {{ res.book?.bookTitle?.isbn || 'N/A' }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="student-info">
+                <div class="student-avatar text-uppercase">
+                    {{ res.user?.fullName?.substring(0, 2) || 'ST' }}
+                </div>
+                <div class="details">
+                    <span class="name">{{ res.user?.fullName }}</span>
+                    <span class="email">{{ res.user?.email }}</span>
+                </div>
+            </div>
+
+            <div class="card-footer">
+                <button class="btn-approve" (click)="acceptReservation(res)">
+                    <i class="bi bi-check2-circle"></i> Aprobar
+                </button>
+                <button class="btn-reject" (click)="rejectReservation(res)">
+                    <i class="bi bi-x-circle"></i> Rechazar
+                </button>
+            </div>
+
+            <div class="request-date">
+                Solicitado el {{ res.loanDate | date:'dd MMM, yyyy HH:mm' }}
+            </div>
+        </div>
+        }
+    </div>
+    } @else {
+    <div class="empty-state">
+        <i class="bi bi-patch-check"></i>
+        <h2>Todo al día</h2>
+        <p>No hay reservaciones pendientes de revisión por el momento.</p>
+    </div>
+    }
+</div>

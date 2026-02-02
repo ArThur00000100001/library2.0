@@ -52,16 +52,17 @@
     <div class="table-controls">
         <div class="search-box">
             <i class="bi bi-search"></i>
-            <input type="text" placeholder="Buscar por usuario, libro o código..." id="loanSearch">
+            <input type="text" placeholder="Buscar por usuario, libro o código..." id="loanSearch"
+                (input)="searchTerm.set($any($event.target).value)" />
         </div>
         <div class="filter-options">
-            <select id="statusFilter">
+            <select id="statusFilter" (change)="statusFilter.set($any($event.target).value)">
                 <option value="">Todos los Estados</option>
                 <option value="active">Activos</option>
                 <option value="returned">Devueltos</option>
                 <option value="overdue">Atrasados</option>
             </select>
-            <select id="dateFilter">
+            <select id="dateFilter" (change)="dateFilter.set($any($event.target).value)">
                 <option value="">Cualquier Fecha</option>
                 <option value="today">Hoy</option>
                 <option value="week">Esta Semana</option>
@@ -84,7 +85,7 @@
                 </tr>
             </thead>
             <tbody>
-                @for (loan of loansList(); track $index) {
+                @for (loan of loansListFilter(); track $index) {
                 <tr>
                     <td>
                         <div class="loan-subject">

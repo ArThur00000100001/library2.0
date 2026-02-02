@@ -19,10 +19,11 @@
     </div>
 
     <nav class="sidebar-nav">
+        @if (user.role === 'admin') {
         <div class="nav-section">
             <p class="section-title">ADMINISTRACIÓN</p>
             <ul class="nav-list">
-                <li class="nav-item active">
+                <li class="nav-item">
                     <a routerLink="/admin/home" routerLinkActive="active">
                         <i class="bi bi-grid-fill"></i>
                         <span>Dashboard</span>
@@ -46,8 +47,39 @@
                         <span>Préstamos</span>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a routerLink="/admin/reservations" routerLinkActive="active">
+                        <i class="bi bi-bookmark-star"></i>
+                        <span>Reservaciones</span>
+                    </a>
+                </li>
             </ul>
         </div>
+        } @else if (user.role === 'student') {
+        <div class="nav-section">
+            <p class="section-title">BIBLIOTECA</p>
+            <ul class="nav-list">
+                <li class="nav-item">
+                    <a routerLink="/student/books" routerLinkActive="active">
+                        <i class="bi bi-book"></i>
+                        <span>Ver Libros</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a routerLink="/student/reservations" routerLinkActive="active">
+                        <i class="bi bi-bookmark-star"></i>
+                        <span>Mis Reservas</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a routerLink="/student/loans" routerLinkActive="active">
+                        <i class="bi bi-calendar-check"></i>
+                        <span>Mis Préstamos</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        }
     </nav>
 
     <div class="sidebar-footer">

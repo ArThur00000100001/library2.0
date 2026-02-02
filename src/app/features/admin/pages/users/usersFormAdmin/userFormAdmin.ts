@@ -55,7 +55,7 @@ export class UsersFormComponent {
         email: new FormControl(null, [
             Validators.required,
             Validators.email,
-            ValidateLastWord('@sistema.com'),
+            ValidateLastWord('@gmail.com'),
             Validators.minLength(6),
             Validators.maxLength(50),
         ]),

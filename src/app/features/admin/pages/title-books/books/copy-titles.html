@@ -43,7 +43,8 @@
     <div class="table-controls">
         <div class="search-box">
             <i class="bi bi-search"></i>
-            <input type="text" placeholder="Buscar ISBN o Registro de copia...">
+            <input type="text" placeholder="Buscar ISBN o Registro de copia..."
+                (input)="searchTerm.set($any($event.target).value)" />
         </div>
     </div>
 
@@ -59,7 +60,7 @@
                 </tr>
             </thead>
             <tbody>
-                @for (copy of bookTitle()?.copies; track copy.id) {
+                @for (copy of filteredCopies(); track copy.id) {
                 <tr>
                     <td>
                         <div class="book-cell">

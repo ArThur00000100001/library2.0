@@ -26,6 +26,45 @@ export class LoansComponent {
 
     readonly loansList = this.apiListservice.loansList;
 
+    readonly searchTerm = signal('');
+    readonly statusFilter = signal('');
+    readonly dateFilter = signal('');
+
+    readonly loansListFilter = computed(() => {
+        let list = this.loansList();
+        const search = this.searchTerm().toLowerCase();
+        const status = this.statusFilter();
+        const date = this.dateFilter();
+
+        if (search) {
+            list = list.filter(
+                (l) =>
+                    l.user?.fullName?.toLowerCase().includes(search) ||
+                    l.book?.bookTitle?.title?.toLowerCase().includes(search) ||
+                    l.userId.toString().includes(search),
+            );
+        }
+
+        if (status) {
+            if (status === 'active') {
+                list = list.filter((l) => l.state === this.loanState.LOANED);
+            } else if (status === 'returned') {
+                list = list.filter((l) => l.state === this.loanState.RETURNED);
+            }
+            // 'overdue' logic would depend on dueDate compared to today
+        }
+
+        if (date) {
+            const today = new Date().toISOString().split('T')[0];
+            if (date === 'today') {
+                list = list.filter((l) => l.loanDate === today);
+            }
+            // week/month logic could be added here
+        }
+
+        return list;
+    });
+
     readonly totalLoans = computed(() => {
         const loans = this.loansList();
         let total = 0;

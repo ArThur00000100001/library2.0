@@ -31,6 +31,32 @@ export class BookTitleComponent {
 
     readonly bookTitleList = this.apiListService.bookTitleList;
 
+    readonly searchTerm = signal('');
+    readonly sortOrder = signal('');
+
+    readonly bookTitleFilter = computed(() => {
+        let list = this.bookTitleList();
+        const search = this.searchTerm().toLowerCase();
+        const sort = this.sortOrder();
+
+        if (search) {
+            list = list.filter(
+                (b) =>
+                    b.title?.toLowerCase().includes(search) ||
+                    b.author?.toLowerCase().includes(search) ||
+                    b.isbn?.toLowerCase().includes(search),
+            );
+        }
+
+        if (sort === 'title') {
+            list = [...list].sort((a, b) => (a.title || '').localeCompare(b.title || ''));
+        } else if (sort === 'newest') {
+            list = [...list].sort((a, b) => (b.publicationYear || 0) - (a.publicationYear || 0));
+        }
+
+        return list;
+    });
+
     readonly totalCopys = computed(() => {
         let total = 0;
         const listBooks = this.bookTitleList();

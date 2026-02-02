@@ -29,7 +29,7 @@
             <div class="stat-info">
                 <h3>Usuarios Totales</h3>
                 <p class="value">{{userList().length}}</p>
-                <!-- <p class="trend positive">+5 registrados hoy</p> -->
+                <p class="trend positive">+{{newUsers().length}} registrados hoy</p>
             </div>
         </div>
 
@@ -40,6 +40,17 @@
             <div class="stat-info">
                 <h3>Préstamos Activos</h3>
                 <p class="value">{{totalLoans()}}</p>
+                <p class="trend">+{{newLoans().length}} registrados hoy</p>
+            </div>
+        </div>
+
+        <div class="stat-card reveal-4">
+            <div class="icon-box reservations">
+                <i class="bi bi-bookmark-check"></i>
+            </div>
+            <div class="stat-info">
+                <h3>Reservas Pendientes</h3>
+                <p class="value">{{totalReservations()}}</p>
                 <p class="trend"></p>
             </div>
         </div>
@@ -95,7 +106,7 @@
             </a>
 
             <!-- Reservas -->
-            <a routerLink="/admin/reservatio" class="module-item reveal-4">
+            <a routerLink="/admin/reservations" class="module-item reveal-4">
                 <div class="module-icon reservations">
                     <i class="bi bi-bookmark-check"></i>
                 </div>

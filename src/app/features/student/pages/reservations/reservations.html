@@ -1,0 +1,45 @@
+<div class="container-fluid p-4">
+    <div class="header-section mb-4">
+        <h1 class="display-5 fw-bold text-primary">Mis Reservaciones</h1>
+        <p class="text-muted">Estado de tus solicitudes actuales de libros.</p>
+    </div>
+
+    <div class="row g-4">
+        @for (res of myReservations(); track res.id) {
+        <div class="col-12 col-xl-6">
+            <div class="card reservation-card shadow-sm border-0 border-start border-4 border-warning h-100">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center">
+                        <div class="book-thumbnail me-4">
+                            <img [src]="res.book?.imgUrl || 'https://via.placeholder.com/80x120'"
+                                class="rounded shadow-sm" width="80" alt="Book Cover">
+                        </div>
+                        <div class="flex-grow-1">
+                            <h5 class="fw-bold text-dark mb-1">{{ res.book?.bookTitle?.title }}</h5>
+                            <p class="text-muted small mb-3">Solicitado el: {{ res.loanDate | date:'longDate' }}</p>
+
+                            <div class="alert alert-warning py-2 mb-0 d-inline-block">
+                                <i class="bi bi-hourglass-split me-2"></i>Esperando aprobación del administrador
+                            </div>
+                        </div>
+                        <div class="actions ms-3">
+                            <button class="btn btn-outline-danger btn-sm rounded-pill px-3"
+                                (click)="cancelReservation(res)">
+                                <i class="bi bi-x-circle me-1"></i>Cancelar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        } @empty {
+        <div class="col-12 text-center py-5 mt-4">
+            <div class="empty-state">
+                <i class="bi bi-bookmark-x display-1 text-muted mb-3"></i>
+                <h3>No tienes reservaciones pendientes</h3>
+                <p class="text-muted">¡Busca algún libro interesante para leer!</p>
+            </div>
+        </div>
+        }
+    </div>
+</div>

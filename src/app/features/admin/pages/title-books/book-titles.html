@@ -52,7 +52,8 @@
     <div class="table-controls">
         <div class="search-box">
             <i class="bi bi-search"></i>
-            <input type="text" placeholder="Buscar por título, autor o ISBN...">
+            <input type="text" placeholder="Buscar por título, autor o ISBN..."
+                (input)="searchTerm.set($any($event.target).value)" />
         </div>
         <div class="filter-options">
             <select>
@@ -60,7 +61,7 @@
                 <option value="fiction">Ficción</option>
                 <option value="non-fiction">No Ficción</option>
             </select>
-            <select>
+            <select (change)="sortOrder.set($any($event.target).value)">
                 <option value="">Ordenar por...</option>
                 <option value="newest">Más recientes</option>
                 <option value="title">Título A-Z</option>
@@ -82,7 +83,7 @@
                 </tr>
             </thead>
             <tbody>
-                @for (book of bookTitleList(); track book.id) {
+                @for (book of bookTitleFilter(); track book.id) {
                 <tr>
                     <td>
                         <div class="book-cell">

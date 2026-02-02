@@ -1,0 +1,29 @@
+.header-section {
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 1rem;
+}
+
+.table {
+    thead {
+        th {
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            color: #6c757d;
+        }
+    }
+
+    tbody {
+        tr {
+            transition: background-color 0.2s ease;
+            &:hover {
+                background-color: rgba(var(--bs-primary-rgb), 0.05);
+            }
+        }
+    }
+}
+
+.badge {
+    font-weight: 500;
+}

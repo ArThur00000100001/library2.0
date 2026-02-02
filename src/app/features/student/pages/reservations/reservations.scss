@@ -1,0 +1,23 @@
+.header-section {
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 1rem;
+}
+
+.reservation-card {
+    transition: all 0.2s ease;
+    
+    &:hover {
+        transform: scale(1.01);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.08) !important;
+    }
+}
+
+.book-thumbnail img {
+    height: 120px;
+    width: 80px;
+    object-fit: cover;
+}
+
+.empty-state {
+    opacity: 0.6;
+}

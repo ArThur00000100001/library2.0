@@ -19,14 +19,25 @@ export class HomeComponent {
     readonly loanState = LoanState;
 
     readonly userList = this.apiListService.usersList;
+    readonly newUsers = this.apiListService.newUsers;
     readonly bookTitlesList = this.apiListService.bookTitleList;
     readonly loanList = this.apiListService.loansList;
+    readonly newLoans = this.apiListService.newLoans;
 
     readonly totalLoans = computed(() => {
         const list = this.loanList();
         let total = 0;
         list.forEach((x) => {
             x.state == this.loanState.LOANED ? total++ : null;
+        });
+        return total;
+    });
+
+    readonly totalReservations = computed(() => {
+        const list = this.loanList();
+        let total = 0;
+        list.forEach((x) => {
+            x.state == this.loanState.RESERVATED ? total++ : null;
         });
         return total;
     });

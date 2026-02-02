@@ -1,0 +1,41 @@
+.book-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 15px;
+    overflow: hidden;
+
+    &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+    }
+}
+
+.book-cover {
+    height: 250px;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+
+    &:hover {
+        transform: scale(1.05);
+    }
+}
+
+.reserve-btn {
+    border-radius: 10px;
+    padding: 10px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background-color: var(--bs-primary-dark);
+        transform: scale(1.02);
+    }
+}
+
+.header-section {
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 1rem;
+}
+
+.empty-state {
+    opacity: 0.6;
+}

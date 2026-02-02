@@ -1,0 +1,53 @@
+<div class="container-fluid p-4">
+    <div class="header-section mb-4">
+        <h1 class="display-5 fw-bold text-primary">Mis Préstamos</h1>
+        <p class="text-muted">Consulta tu historial de préstamos y el estado de tus libros actuales.</p>
+    </div>
+
+    <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="bg-light">
+                    <tr>
+                        <th class="px-4 py-3">Libro</th>
+                        <th class="py-3">Fecha Préstamo</th>
+                        <th class="py-3">Fecha Vencimiento</th>
+                        <th class="py-3">Fecha Devolución</th>
+                        <th class="py-3 text-center">Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (loan of myLoans(); track loan.id) {
+                    <tr>
+                        <td class="px-4">
+                            <div class="d-flex align-items-center">
+                                <img [src]="loan.book?.imgUrl || 'https://via.placeholder.com/40x60'"
+                                    class="rounded me-3" width="40" height="60" style="object-fit: cover;">
+                                <div>
+                                    <div class="fw-bold">{{ loan.book?.bookTitle?.title || 'Libro desconocido' }}</div>
+                                    <div class="small text-muted">Copia #{{ loan.book?.copyNumber }}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>{{ loan.loanDate | date:'dd/MM/yyyy' }}</td>
+                        <td>{{ loan.dueDate | date:'dd/MM/yyyy' }}</td>
+                        <td>{{ loan.returnDate ? (loan.returnDate | date:'dd/MM/yyyy') : '-' }}</td>
+                        <td class="text-center">
+                            <span class="badge rounded-pill px-3 py-2" [class]="getStateClass(loan.state)">
+                                {{ getStateName(loan.state) }}
+                            </span>
+                        </td>
+                    </tr>
+                    } @empty {
+                    <tr>
+                        <td colspan="5" class="text-center py-5">
+                            <i class="bi bi-calendar-x display-4 text-muted mb-3 d-block"></i>
+                            <p class="text-muted">No tienes registros de préstamos.</p>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

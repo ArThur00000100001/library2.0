@@ -91,6 +91,10 @@
                 background: #f1f5f9;
                 color: var(--lib-primary-light);
             }
+            &.reservations {
+                background: #fff7ed;
+                color: #c2410c;
+            }
         }
 
         .stat-info {
